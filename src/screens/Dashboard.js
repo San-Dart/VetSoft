@@ -17,7 +17,7 @@ export default function Dashboard({ route, navigation }) {
   const [usersCount, setUsersCount] = useState('');
 
   const [items, setItems] = useState([
-    { name: 'PETS', value1: '10', route: () => navigation.navigate('Pets') },
+    { name: 'PETS', value1: '100', icon: '', route: () => navigation.navigate('Pets') },
     {
       name: 'OWNERS',
       value1: '14',
@@ -126,12 +126,12 @@ export default function Dashboard({ route, navigation }) {
   return (
     <View style={styles.container}>
       <Header
-       placement='left'
+        placement='left'
         statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
         leftComponent={
-          <View >
+          <View>
             <MaterialIcons name='logo' color={'#000'} size={25} />
-            <Text style={{ fontWeight: 'bold', fontSize: 20 ,marginTop:15}}>Dashboard</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 20, marginTop: 15 }}>Dashboard</Text>
           </View>
         }
         rightComponent={<MaterialIcons name='menu' color={'#000'} size={25} />}
