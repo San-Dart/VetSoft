@@ -4,7 +4,7 @@ import { TouchableOpacity, Text, LogBox, Button, Image } from 'react-native';
 import { FAB, Provider as PaperProvider, Searchbar } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// Navigator//
+// Navigator
 import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
