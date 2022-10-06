@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, Text, TouchableOpacity, View, StyleSheet, RefreshControl, Pressable } from 'react-native';
 import axios from 'react-native-axios';
 import { Divider, FAB, Searchbar, TextInput } from 'react-native-paper';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import { useIsFocused } from '@react-navigation/core';
+import { Header } from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import BranchFilter from '../components/BranchFilter';
+import Accordion from '../components/Accordion';
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -104,120 +108,166 @@ const Owners = ({ route, element, navigation }) => {
 
   return (
     <>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        <View style={{ marginBottom: 80 }}>
-          <Searchbar
-            placeholder='Search by owner name, contact no...'
-            placeholderTextColor={'#00000040'}
-            onChangeText={(text) => searchFilterFunction(text)}
-            value={search}
-            color={'#2f2f7e'}
-            style={{
-              elevation: 4,
-              backgroundColor: '#fff',
-              borderRadius: 50,
-              marginVertical: 10,
-              marginHorizontal: 10,
-              fontSize: 12,
-            }}
-            iconColor={'#2f2f7e'}
-            textAlign={'center'}
-          />
-          {filteredDataSource.map((element, index) => (
-            <>
-              <Pressable onPress={() => deSelectItems(element)}>
-                <TouchableOpacity
-                  onPress={() => handleOnPress(element)}
-                  key={element.id}
-                  style={{
-                    marginHorizontal: 10,
-                    marginBottom: 20,
-                  }}
-                  onLongPress={() => selectItems(element)}
-                >
-                  <View
+      <Header
+        statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
+        containerStyle={{
+          backgroundColor: '#f2f4fc',
+        }}
+        placement='right'
+        leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
+        centerComponent={
+          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+            <MaterialIcons name='home' color={'#000'} size={25} />
+          </TouchableOpacity>
+        }
+        rightComponent={
+          <TouchableOpacity>
+            <MaterialIcons name='menu' color={'#000'} size={25} />
+          </TouchableOpacity>
+        }
+      />
+      <View style={{ flex: 1 }} key='pet_owner'>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            // marginHorizontal: 10,
+            justifyContent: 'space-between',
+            backgroundColor: '#fff',
+          }}
+        >
+          <View style={{ width: '20%', flexDirection: 'row', justifyContent: 'space-between', marginLeft: '2%' }}>
+            <MaterialIcons
+              name='arrow-back-ios'
+              color={'#000'}
+              size={25}
+              onPress={() => navigation.navigate('Dashboard')}
+            />
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Pet Owners</Text>
+          </View>
+          <View style={{ width: '70%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+            <Searchbar
+              placeholder='Search'
+              placeholderTextColor={'#00000040'}
+              onChangeText={(text) => searchFilterFunction(text)}
+              value={search}
+              color={'#2f2f7e'}
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: 5,
+                fontSize: 12,
+                width: '60%',
+                elevation: 2,
+                borderColor: '#d4d2d2',
+              }}
+              // icon={null}
+              // searchicon={true}
+              icon={({ size, color }) => <MaterialIcons name='search' size={24} />}
+              iconColor={'#2f2f7e'}
+            />
+
+            <BranchFilter userData={route.params.userDetails} />
+          </View>
+        </View>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
+          <View style={{ marginTop: '2%', width: '96%', alignSelf: 'center' }}>
+            {filteredDataSource.map((element, index) => (
+              <>
+                <Pressable onPress={() => deSelectItems(element)}>
+                  <TouchableOpacity
+                    onPress={() => handleOnPress(element)}
+                    key={element.id}
                     style={{
-                      zIndex: 0,
-                      backgroundColor: '#fff',
-                      marginBottom: 5,
-                      padding: 10,
-                      shadowColor: '#bebebe',
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 2,
-                      elevation: 10,
-                      borderRadius: 10,
+                      marginHorizontal: 10,
+                      marginBottom: 20,
                     }}
+                    onLongPress={() => selectItems(element)}
                   >
                     <View
                       style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginVertical: 12,
+                        zIndex: 0,
+                        backgroundColor: '#fff',
+                        marginBottom: 5,
+                        padding: 10,
+                        shadowColor: '#bebebe',
+                        shadowOffset: { width: 0, height: 1 },
+                        shadowOpacity: 0.8,
+                        shadowRadius: 2,
+                        elevation: 10,
+                        borderRadius: 10,
                       }}
                     >
-                      <Text
+                      <View
                         style={{
-                          color: '#000',
-                          textAlign: 'left',
-                          fontWeight: 'bold',
-                        }}
-                      >
-                        {element.pet_owner_name}
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#000',
-                          textAlign: 'right',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginVertical: 12,
                         }}
                       >
                         <Text
                           style={{
-                            fontWeight: 'bold',
                             color: '#000',
+                            textAlign: 'left',
+                            fontWeight: 'bold',
                           }}
                         >
-                          Ph-no-
-                        </Text>{' '}
-                        {element.contact_number}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginVertical: 12,
-                      }}
-                    >
-                      <Text
+                          {element.pet_owner_name}
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#000',
+                            textAlign: 'right',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontWeight: 'bold',
+                              color: '#000',
+                            }}
+                          >
+                            Ph-no-
+                          </Text>{' '}
+                          {element.contact_number}
+                        </Text>
+                      </View>
+                      <View
                         style={{
-                          color: '#000',
-                          textAlign: 'left',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          marginVertical: 12,
                         }}
                       >
-                        {Petlength}
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#000',
-                          textAlign: 'right',
-                        }}
-                      >
-                        {element.email}
-                      </Text>
+                        <Text
+                          style={{
+                            color: '#000',
+                            textAlign: 'left',
+                          }}
+                        >
+                          {Petlength}
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#000',
+                            textAlign: 'right',
+                          }}
+                        >
+                          {element.email}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  </TouchableOpacity>
 
-                {selectedItems.includes(element.id) && <View style={styles.overlay} />}
-              </Pressable>
-            </>
-          ))}
-        </View>
-      </ScrollView>
+                  {selectedItems.includes(element.id) && <View style={styles.overlay} />}
+                </Pressable>
+              </>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
       <View style={styles.floatButtons}>
         <View>
           <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddPetOwner')}>
