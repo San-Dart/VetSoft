@@ -284,7 +284,6 @@ const Owners = ({ route, element, navigation }) => {
           <FAB style={styles.fab} medium icon='delete' color='#fff' onPress={() => console.log('Pressed')} />
         </View> */}
       </View>
-      {/* //test */}
     </>
   );
 };
