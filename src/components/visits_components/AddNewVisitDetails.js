@@ -79,6 +79,9 @@ const AddNewVisitDetails = ({ route, navigation }) => {
   const [newPrescMedicineData, setNewPrescMedicineData] = useState([]);
   const [newPrescData, setNewPrescData] = useState([]);
 
+  // const [branchData, setBranchData] = useState([]);
+  const [selectedBranchItem, setSelectedBranchItem] = useState(null);
+
   const [savedSuccessMsg, setSavedSuccessMsg] = useState(false);
 
   // date picker
@@ -493,7 +496,14 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     });
   };
 
-  const handleBranchChange = (value) => {
+  // const handleBranchChange = (value) => {
+  //   setFormData({
+  //     ...formData,
+  //     branch_id: value.id,
+  //   });
+  // };
+
+  const handleRegisteringBranchChange = (value) => {
     setFormData({
       ...formData,
       branch_id: value.id,
@@ -1063,7 +1073,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                       <Switch
                         value={isSwitchOnSymptoms}
                         onValueChange={(value) => onToggleSwitch1(value)}
-                        trackColor={{ false: 'green', true: 'red' }}
+                        trackColor={'#d4d2d2 '}
                         thumbColor={'#fff'}
                       />
                     </View>
@@ -1087,7 +1097,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                       <Switch
                         value={isSwitchOnSymptoms}
                         onValueChange={(value) => onToggleSwitch1(value)}
-                        trackColor={{ false: 'green', true: 'red' }}
+                        trackColor={'#d4d2d2 '}
                         thumbColor={'#fff'}
                       />
                     </View>
@@ -1123,7 +1133,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                     <Switch
                       value={isSwitchOnSymptoms}
                       onValueChange={(value) => onToggleSwitch1(value)}
-                      trackColor={{ false: 'green', true: 'red' }}
+                       trackColor={'#d4d2d2 '}
                       thumbColor={'#fff'}
                     />
                   </View> */}
@@ -1175,7 +1185,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                       <Switch
                         value={isSwitchOnDisease}
                         onValueChange={(value) => onToggleSwitchDisease(value)}
-                        trackColor={{ false: 'green', true: 'red' }}
+                        trackColor={'#d4d2d2 '}
                         thumbColor={'#fff'}
                       />
                     </View>
@@ -1199,7 +1209,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                       <Switch
                         value={isSwitchOnDisease}
                         onValueChange={(value) => onToggleSwitchDisease(value)}
-                        trackColor={{ false: 'green', true: 'red' }}
+                        trackColor={'#d4d2d2 '}
                         thumbColor={'#fff'}
                       />
                     </View>
@@ -1280,7 +1290,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                       <Switch
                         value={isSwitchOnInjection}
                         onValueChange={(value) => onToggleSwitchInjectionData(value)}
-                        trackColor={{ false: 'green', true: 'red' }}
+                        trackColor={'#d4d2d2 '}
                         thumbColor={'#fff'}
                       />
                     </View>
@@ -1304,7 +1314,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                       <Switch
                         value={isSwitchOnInjection}
                         onValueChange={(value) => onToggleSwitchInjectionData(value)}
-                        trackColor={{ false: 'green', true: 'red' }}
+                        trackColor={'#d4d2d2 '}
                         thumbColor={'#fff'}
                       />
                     </View>
@@ -1360,23 +1370,54 @@ const AddNewVisitDetails = ({ route, navigation }) => {
               {/* Documents */}
               <View style={styles.formItem}>
                 <Text style={styles.formLabel}>Documents</Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('DocumentUpload', { updateFileQueue: updateFileQueue, files: files })
-                  }
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
                 >
                   <Text
                     style={{
-                      textAlign: 'center',
-                      padding: 14,
-                      backgroundColor: '#006766',
-                      color: '#fff',
-                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      borderColor: '#d4d2d2',
+                      padding: 10,
+                      width: '80%',
+                      // textAlign: 'center',
+                      color: '#d4d2d2',
                     }}
                   >
-                    Upload a file/image
+                    click to Upload icon to add
                   </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      borderColor: '#d4d2d2',
+                      backgroundColor: '#0e4377',
+                      width: '15%',
+                      padding: 2,
+                      alignItems: 'center',
+                    }}
+                    onPress={() =>
+                      navigation.navigate('DocumentUpload', { updateFileQueue: updateFileQueue, files: files })
+                    }
+                  >
+                    <MaterialCommunityIcons name='upload' color={'#fff'} size={35} />
+                    {/* <Text
+                      style={{
+                        textAlign: 'center',
+                        padding: 14,
+                        backgroundColor: '#006766',
+                        color: '#fff',
+                        borderRadius: 12,
+                      }}
+                    >
+                      Upload a file/image
+                    </Text> */}
+                  </TouchableOpacity>
+                </View>
               </View>
 
               {/* Prescription */}
@@ -1431,8 +1472,21 @@ const AddNewVisitDetails = ({ route, navigation }) => {
               {/* Branch */}
               <View style={styles.formItem}>
                 <Text style={styles.formLabel}>Branch</Text>
-
-                <Dropdown
+                <CustomDropdown
+                  onChange={(value) => {
+                    setSelectedBranchItem && handleRegisteringBranchChange(value);
+                  }}
+                  isButton={false}
+                  dropdownType={'single'}
+                  // autoFocusSearch={false}
+                  enableSearch={true}
+                  labelField='branch'
+                  valueField='id'
+                  // defaultValue={formData && formData.visit_purpose}
+                  data={branchData}
+                  dropdownLabel={'Select Branch'}
+                />
+                {/* <Dropdown
                   style={{
                     width: '100%',
                     padding: 5,
@@ -1458,7 +1512,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                     color: '#00000080',
                     fontSize: 16,
                   }}
-                />
+                /> */}
               </View>
             </View>
             {/* {afterSubmit?<SubmitNewVisitForm/>:<></>} */}

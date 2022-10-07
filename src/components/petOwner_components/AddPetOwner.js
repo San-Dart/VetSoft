@@ -7,6 +7,10 @@ import { Country, State, City } from 'country-state-city';
 import { Dialog, Portal, Paragraph, Button } from 'react-native-paper';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import PhoneInput from 'react-native-phone-number-input';
+<<<<<<< HEAD
+=======
+// import Header_Component from '../Header_component/Header';
+>>>>>>> 4b0e4efed51f1948756517294b9d879b047afd20
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getIconType } from 'react-native-elements';
 import PageHeader from '../../Header_Component/PageHeader';
@@ -250,7 +254,12 @@ const AddPetOwner = ({ route, navigation }) => {
   return (
     <>
       <ScrollView>
+<<<<<<< HEAD
         <PageHeader header={'Create Pet Owner'} />
+=======
+        {/* <Header_Component header='Create Pet Owners' /> */}
+
+>>>>>>> 4b0e4efed51f1948756517294b9d879b047afd20
         <View style={{ flex: 1 }} key='add_pet_owner'>
           <View style={styles.formcontainer}>
             <View style={{ marginHorizontal: '6%' }}>
