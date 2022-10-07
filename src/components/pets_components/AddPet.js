@@ -321,10 +321,6 @@ const AddPet = memo(({ route, navigation }) => {
     });
   };
 
-  const handlePetHeightChangeIncrement = (value) => {};
-
-  const handlePetHeightChangeDecrement = (value) => {};
-
   const handleBirthDateChange = (value) => {
     setFormData({
       ...formData,
@@ -940,7 +936,7 @@ const AddPet = memo(({ route, navigation }) => {
                 valueField='id'
                 defaultValue={formData && formData.visit_purpose}
                 data={branchData}
-                dropdownLabel={'Select a Branch'}
+                dropdownLabel={'Select Branch'}
               />
             </View>
 

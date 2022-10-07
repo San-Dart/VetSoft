@@ -313,7 +313,7 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='Owners'
                 component={Owners}
-                options={{ title: 'Pet Owners' }}
+                options={{ title: 'Pet Owners', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
@@ -580,7 +580,12 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='DocumentUpload'
                 component={DocumentUpload}
-                options={{ title: 'Document Upload' }}
+                options={{
+                  title: 'Add Documents',
+                  headerShown: false,
+                  presentation: 'transparentModal',
+                  statusBarColor: '#00000000',
+                }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}

@@ -7,7 +7,7 @@ import { Country, State, City } from 'country-state-city';
 import { Dialog, Portal, Paragraph, Button } from 'react-native-paper';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import PhoneInput from 'react-native-phone-number-input';
-import Header_Component from '../Header_component/Header';
+// import Header_Component from '../Header_component/Header';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getIconType } from 'react-native-elements';
 
@@ -249,7 +249,7 @@ const AddPetOwner = ({ route, navigation }) => {
   return (
     <>
       <ScrollView>
-        <Header_Component header='Create Pet Owners' />
+        {/* <Header_Component header='Create Pet Owners' /> */}
 
         <View style={{ flex: 1 }} key='add_pet_owner'>
           <View style={styles.formcontainer}>
