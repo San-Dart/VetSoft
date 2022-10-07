@@ -313,7 +313,7 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='Owners'
                 component={Owners}
-                options={{ title: 'Pet Owners' }}
+                options={{ title: 'Pet Owners', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
@@ -454,7 +454,7 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='AddPetOwner'
                 component={AddPetOwner}
-                options={{ title: 'Create Pet Owner' }}
+                options={{ title: 'Create Pet Owner', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}

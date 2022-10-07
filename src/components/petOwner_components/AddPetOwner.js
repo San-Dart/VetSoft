@@ -7,9 +7,9 @@ import { Country, State, City } from 'country-state-city';
 import { Dialog, Portal, Paragraph, Button } from 'react-native-paper';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import PhoneInput from 'react-native-phone-number-input';
-import Header_Component from '../Header_component/Header';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getIconType } from 'react-native-elements';
+import PageHeader from '../../Header_Component/PageHeader';
 
 const AddPetOwner = ({ route, navigation }) => {
   const phoneInput = React.useRef(null);
@@ -20,6 +20,7 @@ const AddPetOwner = ({ route, navigation }) => {
     address: '',
     country: 'IN',
     state: '',
+    city: '',
     branch_id: '',
     clinic_id: '',
   });
@@ -212,11 +213,11 @@ const AddPetOwner = ({ route, navigation }) => {
   };
 
   const handleCityChange = (value) => {
-    set_selected_City_code(value.isoCode);
+    set_selected_City_code(value.name);
     // console.log(value.isoCode);
     setFormData({
       ...formData,
-      state: value.isoCode,
+      city: value.name,
     });
   };
 
@@ -249,8 +250,7 @@ const AddPetOwner = ({ route, navigation }) => {
   return (
     <>
       <ScrollView>
-        <Header_Component header='Create Pet Owners' />
-
+        <PageHeader header={'Create Pet Owner'} />
         <View style={{ flex: 1 }} key='add_pet_owner'>
           <View style={styles.formcontainer}>
             <View style={{ marginHorizontal: '6%' }}>
@@ -308,8 +308,14 @@ const AddPetOwner = ({ route, navigation }) => {
 
               <View>
                 <Text style={styles.text}>Country *</Text>
-                <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#d4d2d2' }}>
-                  <Dropdown
+                {/* <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#d4d2d2' }}> */}
+                <TextInput
+                  style={styles.textInput}
+                  placeholder='INDIA'
+                  editable={false}
+                  placeholderTextColor={'#000000'}
+                ></TextInput>
+                {/* <Dropdown
                     style={[styles.dropdown && { borderColor: 'blue' }]}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
@@ -319,9 +325,9 @@ const AddPetOwner = ({ route, navigation }) => {
                     labelField='label'
                     valueField='value'
                     disable={true}
-                    // placeholder={' India'}
+                    placeholder={' India'}
                     searchPlaceholder='Search Country...'
-                    value={value}
+                    value={'INDIA'}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     onChange={(item) => {
@@ -331,8 +337,8 @@ const AddPetOwner = ({ route, navigation }) => {
                       setIsFocus(false);
                       getSate(item.isoCode);
                     }}
-                  />
-                </View>
+                  /> */}
+                {/* </View> */}
               </View>
 
               <View>
@@ -349,8 +355,8 @@ const AddPetOwner = ({ route, navigation }) => {
                     maxHeight={300}
                     labelField='label'
                     valueField='value'
-                    placeholder={!isFocus ? 'Select a State' : '...'}
-                    searchPlaceholder='Search...'
+                    placeholder={'Select a State'}
+                    searchPlaceholder='Search State...'
                     value={value}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
@@ -378,8 +384,8 @@ const AddPetOwner = ({ route, navigation }) => {
                     maxHeight={300}
                     labelField='label'
                     valueField='value'
-                    placeholder={!isFocus ? 'Select a City' : '...'}
-                    searchPlaceholder='Search...'
+                    placeholder={'Select a City'}
+                    searchPlaceholder='Search City...'
                     value={value}
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}

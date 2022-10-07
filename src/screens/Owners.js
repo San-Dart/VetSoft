@@ -108,7 +108,7 @@ const Owners = ({ route, element, navigation }) => {
 
   return (
     <>
-      <Header
+      {/* <Header
         statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
         containerStyle={{
           backgroundColor: '#f2f4fc',
@@ -166,6 +166,53 @@ const Owners = ({ route, element, navigation }) => {
               iconColor={'#2f2f7e'}
             />
 
+            <BranchFilter userData={route.params.userDetails} />
+          </View>
+        </View> */}
+      <Header
+        statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
+        containerStyle={{
+          backgroundColor: '#f2f4fc',
+        }}
+        placement='right'
+        leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
+        centerComponent={
+          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+            <MaterialIcons name='home' color={'#000'} size={25} />
+          </TouchableOpacity>
+        }
+        rightComponent={
+          <TouchableOpacity>
+            <MaterialIcons name='menu' color={'#000'} size={25} />
+          </TouchableOpacity>
+        }
+      />
+      <View style={styles.container} key='pet_1'>
+        <View style={{ marginHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ width: '40%', flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons name='arrow-back-ios' color={'#000'} size={25} />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pets Owners</Text>
+          </View>
+          <View style={{ width: '60%', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Searchbar
+              placeholder='Search'
+              placeholderTextColor={'#00000040'}
+              onChangeText={(text) => searchFilterFunction(text)}
+              value={search}
+              color={'#2f2f7e'}
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: 10,
+                height: 40,
+                fontSize: 10,
+                width: '75%',
+              }}
+              icon={null}
+              iconColor={'#2f2f7e'}
+              // textAlign={'center'}
+            />
             <BranchFilter userData={route.params.userDetails} />
           </View>
         </View>

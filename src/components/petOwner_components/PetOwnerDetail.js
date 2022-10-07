@@ -8,10 +8,11 @@ import axios from 'react-native-axios';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const renderContent = (item, _) => {
   // console.log("renderContent", item);
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const getIndividualPetDetails = (item) => {
     // console.log("section", section);
@@ -21,6 +22,10 @@ const renderContent = (item, _) => {
   const getIndividualVisitHistoryDetails = (item) => {
     // console.log(id);
     navigation.navigate('VisitHistory', { petData: item.id });
+  };
+
+  const onDelete = () => {
+    alert('Delete');
   };
 
   //Accordion Content view
@@ -33,23 +38,17 @@ const renderContent = (item, _) => {
         <TouchableOpacity style={styles.petListButton} onPress={() => getIndividualPetDetails(item)}>
           <Text style={styles.accordionButton}>Start Consultation</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.petListButton} onPress={() => navigation.navigate('PetDetails', item)}>
-          <Text style={styles.accordionButton}>Pet Details</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.petListButton} onPress={() => navigation.navigate('Message')}>
           <Text style={styles.accordionButton}>Message</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.petListButton} onPress={() => navigation.navigate('PetDetails', item)}>
+          <Text style={styles.accordionButton}>Pet Details</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.petListButton} onPress={() => getIndividualVisitHistoryDetails(item)}>
           <Text style={styles.accordionButton}>Visit History</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.del_fab}>
-          <FAB
-            style={{ backgroundColor: '#1695b5', elevation: 0 }}
-            medium
-            icon='delete'
-            onPress={() => console.log('Pressed')}
-          />
+        <TouchableOpacity style={styles.petListDELButton} onPress={onDelete}>
+          <MaterialIcons name='delete' color={'#fff'} size={25} />
         </TouchableOpacity>
       </View>
     </View>
@@ -706,9 +705,9 @@ const styles = StyleSheet.create({
   },
   accBut: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 15,
-    marginHorizontal: 2,
+    justifyContent: 'space-evenly',
+    // marginTop: 15,
+    // marginHorizontal: 2,
   },
   petListButton: {
     backgroundColor: '#1695b5',
@@ -717,10 +716,19 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 5,
   },
+  petListDELButton: {
+    padding: 10,
+    backgroundColor: '#1695b5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
   accordionButton: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 2,
   },
   header: {
     paddingTop: 10,
