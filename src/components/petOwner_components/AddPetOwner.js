@@ -450,7 +450,7 @@ const AddPetOwner = ({ route, navigation }) => {
                     data={clinicData}
                 />
               </View> */}
-
+              {/* test */}
               <View style={{ marginTop: '10%', marginBottom: '5%' }}>
                 <TouchableOpacity onPress={onSubmit} style={styles.submit}>
                   <Text style={{ textAlign: 'center', color: '#fff', fontWeight: 'bold' }}>Save</Text>
