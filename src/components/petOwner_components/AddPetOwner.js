@@ -254,12 +254,7 @@ const AddPetOwner = ({ route, navigation }) => {
   return (
     <>
       <ScrollView>
-<<<<<<< HEAD
         <PageHeader header={'Create Pet Owner'} />
-=======
-        {/* <Header_Component header='Create Pet Owners' /> */}
-
->>>>>>> 4b0e4efed51f1948756517294b9d879b047afd20
         <View style={{ flex: 1 }} key='add_pet_owner'>
           <View style={styles.formcontainer}>
             <View style={{ marginHorizontal: '6%' }}>
