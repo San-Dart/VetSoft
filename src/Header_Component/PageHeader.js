@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, View, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const PageHeader = (props) => {
   const navigation = useNavigation();
@@ -14,7 +15,11 @@ const PageHeader = (props) => {
           backgroundColor: '#f2f4fc',
         }}
         placement='right'
-        leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
+        leftComponent={
+          <View style={{ backgroundColor: '#006766', borderRadius: 25, padding: 5 }}>
+            <MaterialCommunityIcons name='paw' color={'#fff'} size={20} />
+          </View>
+        }
         centerComponent={
           <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
             <MaterialIcons name='home' color={'#000'} size={25} />

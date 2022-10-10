@@ -5,6 +5,7 @@ import { SectionGrid } from 'react-native-super-grid';
 import axios from 'react-native-axios';
 import { Header } from 'react-native-elements';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -130,7 +131,9 @@ export default function Dashboard({ route, navigation }) {
         statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
         leftComponent={
           <View>
-            <MaterialIcons name='logo' color={'#000'} size={25} />
+            <View style={{ backgroundColor: '#006766', borderRadius: 25, padding: 5, alignItems: 'center' }}>
+              <MaterialCommunityIcons name='paw' color={'#fff'} size={20} />
+            </View>
             <Text style={{ fontWeight: 'bold', fontSize: 20, marginTop: 15 }}>Dashboard</Text>
           </View>
         }

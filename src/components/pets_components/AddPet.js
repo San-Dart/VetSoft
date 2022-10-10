@@ -219,7 +219,7 @@ const AddPet = memo(({ route, navigation }) => {
     setDate(currentDate);
 
     let tempDate = new Date(currentDate);
-    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+    let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
     setText(fDate);
     handleBirthDateChange(fDate);
   };
@@ -230,7 +230,7 @@ const AddPet = memo(({ route, navigation }) => {
     setDeadDate(currentDeadDate);
 
     let deathDate = new Date(currentDeadDate);
-    let dDate = deathDate.getDate() + '/' + (deathDate.getMonth() + 1) + '/' + deathDate.getFullYear();
+    let dDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
     setDeadText(dDate);
     // console.log(dDate)
   };
@@ -261,7 +261,6 @@ const AddPet = memo(({ route, navigation }) => {
   };
 
   const handlePetOwnerChange = (value) => {
-    console.log('On Change', value);
     setFormData({
       ...formData,
       pet_owner_id: value.id,
@@ -497,7 +496,6 @@ const AddPet = memo(({ route, navigation }) => {
               )}
 
               {/* Custom Dropdown */}
-
               <CustomDropdown
                 handleAddEvent={handleAddNewPetOwner}
                 onChange={handlePetOwnerChange}
@@ -1084,7 +1082,7 @@ const styles = StyleSheet.create({
   },
   required: {
     color: 'red',
-    marginLeft: 10,
+    marginLeft: 5,
     fontWeight: 'bold',
   },
 });

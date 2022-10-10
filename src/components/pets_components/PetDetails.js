@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { TextInput, Dialog, Portal, Paragraph } from 'react-native-paper';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { Dialog, Portal, Paragraph } from 'react-native-paper';
 import { Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'react-native-axios';
 import DatePicker from 'react-native-datepicker';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PageHeader from '../../Header_Component/PageHeader';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import CustomDropdown from '../CustomDropdown/CustomDropdown';
 
 const PetDetails = ({ route, navigation }) => {
   const params = route.params;
@@ -18,19 +21,37 @@ const PetDetails = ({ route, navigation }) => {
     pet_color: '',
     pet_age: '',
     weight: '',
+    weightUnit: '',
+    heightUnit: '',
     height: '',
     pet_owner_id: '',
+    special_note: '',
+    branch_id: '',
   });
 
   const [breedData, setBreedData] = useState([]);
+  const [petOwnersData, setPetOwnersData] = useState([]);
   const [petTypeData, setPetTypeData] = useState([]);
   const [petColorData, setPetColorData] = useState([]);
   const [petOwnerData, setPetOwnerData] = useState([]);
+  const [branchData, setBranchData] = useState([]);
+  const [selectedBranchItem, setSelectedBranchItem] = useState(null);
 
   const [successMsg, setSuccessMsg] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
 
-  const [show, setShow] = useState(true);
+  const [requiredField, setRequiredField] = useState(false);
+
+  const [weight, setWeight] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [weightUnit, setWeightUnit] = useState('');
+  const [heightUnit, setHeightUnit] = useState('');
+
+  // date picker
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [text, setText] = useState('');
 
   useEffect(() => {
     setFormData({
@@ -41,8 +62,12 @@ const PetDetails = ({ route, navigation }) => {
       pet_color: params.pet_color,
       pet_age: params.pet_age,
       weight: params.weight,
+      weight: params.weightUnit,
       height: params.height,
+      height: params.heightUnit,
       pet_owner_id: params.pet_owner_id.id,
+      special_note: params.special_note,
+      branch_id: params.branch_id,
     });
     getPetTypeData();
     getBreedData();
@@ -172,10 +197,12 @@ const PetDetails = ({ route, navigation }) => {
   };
 
   const handleDob = (value) => {
+    console.log(value, 'date');
     setFormData({
       ...formData,
       pet_age: value,
     });
+    console.log(formData.pet_age, 'date');
   };
 
   const handleWeight = (value) => {
@@ -199,6 +226,90 @@ const PetDetails = ({ route, navigation }) => {
     });
   };
 
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const onChangeDob = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+
+    let tempDate = new Date(currentDate);
+    let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
+    setText(fDate);
+    handleDob(fDate);
+  };
+
+  // for weight
+  const handleWeightChange = (value) => {
+    setWeightUnit(value.value);
+  };
+  const handlePetWeightChange = (value) => {
+    if (value == '') {
+      setWeight(0);
+    } else {
+      setWeight(parseInt(value));
+    }
+    WeightSet(value);
+  };
+  const handlePetWeightincrement = (value) => {
+    setWeight((prevweight) => prevweight + 1);
+    WeightSet(weight);
+  };
+  const handlePetWeightdecrement = (value) => {
+    setWeight((prevweight) => prevweight - 1);
+    WeightSet(weight);
+  };
+  const WeightSet = (value) => {
+    setFormData({
+      ...formData,
+      weight: value,
+    });
+  };
+
+  // for Height
+  const handleHeightChange = (value) => {
+    setHeightUnit(value.value);
+  };
+  const handlePetHeightChange = (value) => {
+    if (value == '') {
+      setHeight(0);
+    } else {
+      setHeight(parseInt(value));
+    }
+    HeightSet(value);
+  };
+  const handlePetHeightincrement = (value) => {
+    setHeight((prevheight) => prevheight + 1);
+    HeightSet(height);
+  };
+  const handlePetHeightdecrement = (value) => {
+    setHeight((prevheight) => prevheight - 1);
+    HeightSet(height);
+  };
+  const HeightSet = (value) => {
+    setFormData({
+      ...formData,
+      height: value,
+    });
+  };
+
+  const handleSpecialNoteChange = (value) => {
+    setFormData({
+      ...formData,
+      special_note: value,
+    });
+  };
+
+  const handleRegisteringBranchChange = (value) => {
+    setFormData({
+      ...formData,
+      branch_id: value.id,
+    });
+  };
+
   // const handleEmail = (value) => {
   //     setFormData({
   //       ...formData,
@@ -213,22 +324,51 @@ const PetDetails = ({ route, navigation }) => {
   // };
 
   const onSubmit = () => {
-    console.log(formData);
-    let petId = route.params.id;
-    console.log('paramsss', petId);
-    axios
-      .put(`pet/update/${petId}`, formData)
-      .then((res) => {
-        // console.log(res.data);
-        if (res.status === 200) {
-          // console.log(res.data);
-          //  navigation.navigate('');
-          setSuccessMsg(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+    formData.weight = formData.weight + ' ' + formData.weightUnit;
+    formData.height = formData.height + ' ' + formData.heightUnit;
+
+    if (formData.pet_name == '') {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
       });
+      setRequiredField(true);
+    } else if (formData.pet_owner_id == '') {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+      setRequiredField(true);
+    } else if (formData.pet_type_id == '') {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+      setRequiredField(true);
+    } else if (formData.breed_id == '') {
+      scrollRef.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+      setRequiredField(true);
+    } else {
+      // console.log(formData);
+      let petId = route.params.id;
+      // console.log('paramsss', petId);
+      axios
+        .put(`pet/update/${petId}`, formData)
+        .then((res) => {
+          // console.log(res.data);
+          if (res.status === 200) {
+            // console.log(res.data);
+            //  navigation.navigate('');
+            setSuccessMsg(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   const handlegoback = () => {
@@ -239,6 +379,10 @@ const PetDetails = ({ route, navigation }) => {
 
   const handleCancel = () => {
     setErrorMsg(false);
+  };
+
+  const handleAddNewPetOwner = () => {
+    navigation.navigate('AddPetOwner');
   };
 
   return (
@@ -270,7 +414,22 @@ const PetDetails = ({ route, navigation }) => {
             </View> */}
 
             {/* <View style={styles.parallel}> */}
-            <View>
+
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Pet Name</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+              <TextInput
+                placeholder={formData.pet_name}
+                style={styles.formTextInput}
+                onChangeText={(value) => {
+                  value && handlePetName(value);
+                }}
+              ></TextInput>
+            </View>
+
+            {/* <View>
               <Text style={styles.heading}>Name :</Text>
               {show ? (
                 <Text style={styles.text}>{params.pet_name}</Text>
@@ -283,115 +442,309 @@ const PetDetails = ({ route, navigation }) => {
                   }}
                 />
               )}
+            </View> */}
+
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Pet Owner</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+
+              <Dropdown
+                search
+                searchPlaceholder='Search...'
+                placeholder='Select OwnerName'
+                style={styles.dropdown}
+                data={petOwnerData}
+                labelField='pet_owner_name'
+                valueField='id'
+                placeholderStyle={{ color: '#00000070', fontSize: 12 }}
+                // value={params.pet_owner_id.pet_owner_name}
+                // defaultValue={params.pet_owner_id.pet_owner_name}
+                value={formData && formData.pet_owner_id}
+                onChange={(value) => {
+                  value && handleOwnerName(value);
+                }}
+                selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
+              />
             </View>
 
-            <View style={styles.parallel}>
-              <Text style={styles.heading}>Associated Animal :</Text>
-              {show ? (
-                <Text style={styles.text}>{params.pet_type_id.animal_type}</Text>
-              ) : (
-                <Dropdown
-                  // defaultValue={params.pet_type_id.animal_type}
-                  value={formData && formData.pet_type_id}
-                  style={styles.dropdown}
-                  search
-                  searchPlaceholder='Search...'
-                  placeholder='Select Animal Type'
-                  placeholderStyle={{ color: '#00000070', fontSize: 12 }}
-                  data={petTypeData}
-                  labelField='animal_type'
-                  valueField='id'
-                  onChange={(value) => {
-                    value && handlePetType(value);
-                  }}
-                  selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
-                />
-              )}
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Animal Type</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+
+              <Dropdown
+                // defaultValue={params.pet_type_id.animal_type}
+                value={formData && formData.pet_type_id}
+                style={styles.dropdown}
+                search
+                searchPlaceholder='Search...'
+                placeholder='Select Animal Type'
+                placeholderStyle={{ color: '#00000070', fontSize: 12 }}
+                data={petTypeData}
+                labelField='animal_type'
+                valueField='id'
+                onChange={(value) => {
+                  value && handlePetType(value);
+                }}
+                selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
+              />
+              {/* )} */}
             </View>
 
-            <View style={styles.parallel}>
-              <Text style={styles.heading}>Breed :</Text>
-              {show ? (
-                <Text style={styles.text}>{params.breed_id.breed}</Text>
-              ) : (
-                <Dropdown
-                  value={formData && formData.breed_id}
-                  style={styles.dropdown}
-                  search
-                  searchPlaceholder='Search...'
-                  placeholder='Select Breed'
-                  placeholderStyle={{ color: '#00000070', fontSize: 12 }}
-                  data={breedData}
-                  maxHeight={300}
-                  labelField='breed'
-                  valueField='id'
-                  onChange={(value) => {
-                    value && handleBreed(value);
-                  }}
-                  selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
-                />
-              )}
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Breed</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+              <Dropdown
+                value={formData && formData.breed_id}
+                style={styles.dropdown}
+                search
+                searchPlaceholder='Search...'
+                placeholder='Select Breed'
+                placeholderStyle={{ color: '#00000070', fontSize: 12 }}
+                data={breedData}
+                maxHeight={300}
+                labelField='breed'
+                valueField='id'
+                onChange={(value) => {
+                  value && handleBreed(value);
+                }}
+                selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
+              />
             </View>
 
-            <View style={styles.parallel}>
-              <Text style={styles.heading}>Color/Coat :</Text>
-              {show ? (
-                <Text style={styles.text}>{params.pet_color}</Text>
-              ) : (
-                <Dropdown
-                  style={styles.dropdown}
-                  placeholder='Select Color'
-                  search
-                  searchPlaceholder='Search...'
-                  data={petColorData}
-                  maxHeight={300}
-                  labelField='color'
-                  placeholderStyle={{ color: '#00000070', fontSize: 12 }}
-                  valueField='id'
-                  value={formData && formData.pet_color}
-                  onChange={(value) => {
-                    value && handleColor(value);
-                  }}
-                  selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
-                />
-              )}
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Color/Coat</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+              <Dropdown
+                style={styles.dropdown}
+                placeholder='Select Color'
+                search
+                searchPlaceholder='Search...'
+                data={petColorData}
+                maxHeight={300}
+                labelField='color'
+                placeholderStyle={{ color: '#00000070', fontSize: 12 }}
+                valueField='id'
+                value={formData && formData.pet_color}
+                onChange={(value) => {
+                  value && handleColor(value);
+                }}
+                selectedTextStyle={{ color: '#000', textTransform: 'capitalize' }}
+              />
             </View>
 
-            <View style={styles.parallel}>
-              <Text style={styles.heading}>Date of Birth:</Text>
-              {show ? (
-                <Text style={styles.text}>{params.pet_age}</Text>
-              ) : (
-                <View style={styles.datePicker}>
-                  <MaterialCommunityIcons name='calendar-edit' color={'#006766'} size={35} />
-                  <DatePicker
-                    style={styles.datePickerStyle}
-                    date={formData && formData.pet_age} // Initial date from state
-                    mode='date' // The enum of date, datetime and time
-                    placeholder='select date'
-                    placeholderStyle={{ color: '#000' }}
-                    format='YYYY-MM-DD'
-                    confirmBtnText='Confirm'
-                    cancelBtnText='Cancel'
-                    customStyles={{
-                      dateIcon: {
-                        display: 'none',
-                      },
-                    }}
-                    onDateChange={(value) => handleDob(value)}
-                    dropDownContainerStyle={{
-                      borderWidth: 1,
-                      borderColor: '#eeee',
-                    }}
-                    searchContainerStyle={{
-                      borderBottomColor: '#eeee',
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Date Of Birth</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => showMode('date')}
+                style={{
+                  borderWidth: 1,
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  borderColor: '#d4d2d2',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 10,
+                }}
+              >
+                {text ? (
+                  <Text style={{ color: '#000' }}>{text}</Text>
+                ) : (
+                  <Text style={{ color: '#d4d2d2' }}>Select date</Text>
+                )}
+
+                <MaterialIcons name='calendar-today' color={'#d4d2d2'} size={20} />
+              </TouchableOpacity>
+              <View style={styles.formInsideHeadDate}>
+                {show && (
+                  <DateTimePicker
+                    testID='dateTimePicker'
+                    value={date}
+                    mode={mode}
+                    display='default'
+                    onChange={onChangeDob}
+                    onChangeText={(value) => {
+                      handleDob(value);
                     }}
                   />
-                </View>
-              )}
+                )}
+              </View>
             </View>
 
-            <View style={styles.parallel}>
+            <View style={styles.formItem}>
+              <Text style={styles.formLabel}>Weight</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    width: '20%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopLeftRadius: 10,
+                    borderBottomLeftRadius: 10,
+                    borderColor: '#d4d2d2',
+                    borderRightWidth: 0,
+                    borderWidth: 1,
+                    height: 42,
+                  }}
+                >
+                  <TextInput
+                    placeholder='0'
+                    maxLength={5}
+                    keyboardType='number-pad'
+                    onChangeText={(value) => handlePetWeightChange(value)}
+                  >
+                    {weight}
+                  </TextInput>
+                </View>
+                <View
+                  style={{
+                    width: '10%',
+                    justifyContent: 'space-between',
+                    borderColor: '#d4d2d2',
+                    borderWidth: 1,
+                    height: 42,
+                  }}
+                >
+                  <View
+                    style={{
+                      borderBottomWidth: 1,
+                      borderColor: '#d4d2d2',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TouchableOpacity onPress={(value) => handlePetWeightincrement(value)}>
+                      <MaterialIcons name='keyboard-arrow-up' color={'#d4d2d2'} size={20} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      borderColor: '#d4d2d2',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TouchableOpacity onPress={(value) => handlePetWeightdecrement(value)} disabled={weight == 0}>
+                      <MaterialIcons name='keyboard-arrow-down' color={'#d4d2d2'} size={20} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{ width: '70%' }}>
+                  <CustomDropdown
+                    onChange={(value) => handleWeightChange(value)}
+                    isButton={false}
+                    dropdownType={'single'}
+                    dropdownLabel={'Kilogram(s)'}
+                    autoFocusSearch={false}
+                    enableSearch={false}
+                    labelField='title'
+                    valueField='value'
+                    defaultValue={formData && formData.visit_purpose}
+                    data={[
+                      { id: '1', title: 'kg (KiloGram)', value: 'kg' },
+                      { id: '2', title: 'g (Grams)', value: 'g' },
+                    ]}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.formItem}>
+              <Text style={styles.formLabel}>Height</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}
+              >
+                <View
+                  style={{
+                    width: '20%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopLeftRadius: 10,
+                    borderBottomLeftRadius: 10,
+                    borderColor: '#d4d2d2',
+                    borderRightWidth: 0,
+                    borderWidth: 1,
+                  }}
+                >
+                  <TextInput
+                    placeholder='0'
+                    maxLength={4}
+                    keyboardType='number-pad'
+                    onChangeText={(value) => handlePetHeightChange(value)}
+                  >
+                    {height}
+                  </TextInput>
+                </View>
+                <View
+                  style={{
+                    width: '10%',
+                    justifyContent: 'space-between',
+                    borderColor: '#d4d2d2',
+                    borderWidth: 1,
+                  }}
+                >
+                  <View
+                    style={{
+                      borderBottomWidth: 1,
+                      borderColor: '#d4d2d2',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TouchableOpacity onPress={(value) => handlePetHeightincrement(value)}>
+                      <MaterialIcons name='keyboard-arrow-up' color={'#d4d2d2'} size={20} />
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      borderColor: '#d4d2d2',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <TouchableOpacity onPress={(value) => handlePetHeightdecrement(value)} disabled={height == 0}>
+                      <MaterialIcons name='keyboard-arrow-down' color={'#d4d2d2'} size={20} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{ width: '70%' }}>
+                  <CustomDropdown
+                    onChange={(value) => handleHeightChange(value)}
+                    isButton={false}
+                    dropdownLabel={'Cm(s)'}
+                    dropdownType={'single'}
+                    autoFocusSearch={false}
+                    enableSearch={false}
+                    labelField='title'
+                    valueField='value'
+                    data={[
+                      { id: '1', title: 'cm (Centimeter)', value: 'cm' },
+                      { id: '2', title: 'm (Meter)', value: 'm' },
+                    ]}
+                  />
+                </View>
+              </View>
+            </View>
+
+            {/* <View style={styles.parallel}>
               <Text style={styles.heading}>Weight:</Text>
               {show ? (
                 <Text style={styles.text}>{params.weight}</Text>
@@ -404,9 +757,9 @@ const PetDetails = ({ route, navigation }) => {
                   }}
                 />
               )}
-            </View>
+            </View> */}
 
-            <View style={styles.parallel}>
+            {/* <View style={styles.parallel}>
               <Text style={styles.heading}>Height:</Text>
               {show ? (
                 <Text style={styles.text}>{params.height}</Text>
@@ -419,9 +772,9 @@ const PetDetails = ({ route, navigation }) => {
                   }}
                 />
               )}
-            </View>
+            </View> */}
 
-            <View>
+            {/* <View>
               <View>
                 <Text style={{ fontSize: 18, margin: 20 }}>Owner Profile</Text>
               </View>
@@ -480,12 +833,41 @@ const PetDetails = ({ route, navigation }) => {
                   />
                 )}
               </View>
+            </View> */}
 
-              <View style={styles.formButtons}>
-                <TouchableOpacity onPress={onSubmit}>
-                  <Text style={styles.submit}>Save</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={styles.formItem}>
+              <Text style={styles.formLabel}>Special Note</Text>
+              <TextInput
+                style={styles.textArea}
+                placeholder='Anything like conical illness or 2 headed or 3 fingers etc'
+                placeholderTextColor='#d4d2d2'
+                numberOfLines={7}
+                multiline={true}
+                onChangeText={(value) => handleSpecialNoteChange(value)}
+              />
+            </View>
+
+            <View style={styles.formItem}>
+              <Text style={styles.formLabel}>Registering Branch</Text>
+              <CustomDropdown
+                onChange={(value) => {
+                  setSelectedBranchItem && handleRegisteringBranchChange(value);
+                }}
+                isButton={false}
+                dropdownType={'single'}
+                enableSearch={true}
+                labelField='branch'
+                valueField='id'
+                defaultValue={formData && formData.visit_purpose}
+                data={branchData}
+                dropdownLabel={'Select Branch'}
+              />
+            </View>
+
+            <View style={styles.formButtons}>
+              <TouchableOpacity onPress={onSubmit}>
+                <Text style={styles.submit}>Save</Text>
+              </TouchableOpacity>
             </View>
 
             {/* <View style={styles.row}>
@@ -553,6 +935,32 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 14,
   },
+  formLabel: {
+    fontWeight: 'bold',
+    marginBottom: 10,
+    fontSize: 15,
+  },
+  required: {
+    color: 'red',
+    marginLeft: 5,
+    fontWeight: 'bold',
+  },
+  formTextInput: {
+    height: 42,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#d4d2d2',
+  },
+  textArea: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+
+    paddingHorizontal: 15,
+
+    borderWidth: 1,
+    borderColor: '#d4d2d2',
+  },
   datePickerStyle: {
     width: '80%',
   },
@@ -605,11 +1013,10 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   dropdown: {
-    height: 35,
-    padding: 10,
-    width: '50%',
-    backgroundColor: '#fff',
-    elevation: 1,
+    padding: 5,
+    borderColor: '#d4d2d2',
+    borderWidth: 1,
+    borderRadius: 10,
   },
   datePicker: {
     flexDirection: 'row',
