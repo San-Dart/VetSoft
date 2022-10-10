@@ -550,7 +550,7 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='AddNewVisitDetails'
                 component={AddNewVisitDetails}
-                options={{ title: 'Add New Visit Details', headerShown: false }}
+                options={{ title: 'Start Consultation', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
@@ -567,7 +567,7 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='PetDetails'
                 component={PetDetails}
-                options={{ title: 'Pet Details' }}
+                options={{ title: 'Update Pet', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
@@ -584,7 +584,7 @@ export default function App() {
                   title: 'Add Documents',
                   headerShown: false,
                   presentation: 'transparentModal',
-                  statusBarColor: '#00000000',
+                  statusBarColor: '#00000099',
                 }}
               />
               <Stack.Screen

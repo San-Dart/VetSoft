@@ -289,32 +289,54 @@ const AddPet = memo(({ route, navigation }) => {
     });
   };
 
+  // for weight
   const handleWeightChange = (value) => {
     setWeightUnit(value.value);
   };
-
   const handlePetWeightChange = (value) => {
     if (value == '') {
       setWeight(0);
     } else {
       setWeight(parseInt(value));
     }
+    WeightSet(value);
+  };
+  const handlePetWeightincrement = (value) => {
+    setWeight((prevweight) => prevweight + 1);
+    WeightSet(weight);
+  };
+  const handlePetWeightdecrement = (value) => {
+    setWeight((prevweight) => prevweight - 1);
+    WeightSet(weight);
+  };
+  const WeightSet = (value) => {
     setFormData({
       ...formData,
       weight: value,
     });
   };
 
+  // for Height
   const handleHeightChange = (value) => {
     setHeightUnit(value.value);
   };
-
   const handlePetHeightChange = (value) => {
     if (value == '') {
       setHeight(0);
     } else {
       setHeight(parseInt(value));
     }
+    HeightSet(value);
+  };
+  const handlePetHeightincrement = (value) => {
+    setHeight((prevheight) => prevheight + 1);
+    HeightSet(height);
+  };
+  const handlePetHeightdecrement = (value) => {
+    setHeight((prevheight) => prevheight - 1);
+    HeightSet(height);
+  };
+  const HeightSet = (value) => {
     setFormData({
       ...formData,
       height: value,
@@ -431,7 +453,7 @@ const AddPet = memo(({ route, navigation }) => {
 
   // console.log(formData.pet_age, 'formdata.age');
   // console.log(formData.height, 'formdata.height');
-  // console.log(formData.weight, 'formdata.weight');
+  console.log(formData.weight, 'formdata.weight');
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} ref={scrollRef}>
@@ -655,11 +677,7 @@ const AddPet = memo(({ route, navigation }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={(value) => {
-                        setWeight((prevweight) => prevweight + 1);
-                      }}
-                    >
+                    <TouchableOpacity onPress={(value) => handlePetWeightincrement(value)}>
                       <MaterialIcons name='keyboard-arrow-up' color={'#d4d2d2'} size={20} />
                     </TouchableOpacity>
                   </View>
@@ -670,21 +688,14 @@ const AddPet = memo(({ route, navigation }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={(value) => {
-                        setWeight((prevweight) => prevweight - 1);
-                      }}
-                      disabled={weight == 0}
-                    >
+                    <TouchableOpacity onPress={(value) => handlePetWeightdecrement(value)} disabled={weight == 0}>
                       <MaterialIcons name='keyboard-arrow-down' color={'#d4d2d2'} size={20} />
                     </TouchableOpacity>
                   </View>
                 </View>
                 <View style={{ width: '70%' }}>
                   <CustomDropdown
-                    // handleAddEvent={handleAddNewVisitPurpose}
                     onChange={(value) => handleWeightChange(value)}
-                    // buttonLabel={"Eg: kg / g"}
                     isButton={false}
                     dropdownType={'single'}
                     dropdownLabel={'Kilogram(s)'}
@@ -773,11 +784,7 @@ const AddPet = memo(({ route, navigation }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <TouchableOpacity
-                      onPress={(value) => {
-                        setHeight((prevHeight) => prevHeight + 1);
-                      }}
-                    >
+                    <TouchableOpacity onPress={(value) => handlePetHeightincrement(value)}>
                       <MaterialIcons name='keyboard-arrow-up' color={'#d4d2d2'} size={20} />
                     </TouchableOpacity>
                   </View>
@@ -788,13 +795,7 @@ const AddPet = memo(({ route, navigation }) => {
                       alignItems: 'center',
                     }}
                   >
-                    <TouchableOpacity
-                      style={{ alignItems: 'center' }}
-                      onPress={(value) => {
-                        setHeight((prevHeight) => prevHeight - 1);
-                      }}
-                      disabled={height == 0}
-                    >
+                    <TouchableOpacity onPress={(value) => handlePetHeightdecrement(value)} disabled={height == 0}>
                       <MaterialIcons name='keyboard-arrow-down' color={'#d4d2d2'} size={20} />
                     </TouchableOpacity>
                   </View>

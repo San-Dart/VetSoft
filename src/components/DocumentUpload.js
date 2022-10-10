@@ -256,13 +256,12 @@ const DocumentUpload = ({ route, navigation }) => {
   // }
 
   const onDelete = (item) => {
-    var index = files.indexOf(item.id);
+    var index = files.indexOf(item);
     if (index > -1) {
       files.splice(index, 1);
     }
     var deletedItems = files;
     setFiles([...deletedItems]);
-    console.log(files);
   };
 
   return (

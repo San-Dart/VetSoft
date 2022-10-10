@@ -214,34 +214,33 @@ const renderContent = (item, _) => {
     navigation.navigate('EditPet', { petDetails: item });
   };
 
-  const onDelete = () => {
-    alert('Delete');
-    // let newListDel = selectedItems;
-    // console.log(newListDel);
-    // await axios
-    //   .delete(`/breed/${newListDel}`)
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     if (res.status === 200) {
-    //       console.log('Breed deleted');
-    //       // setVaccineData(res.data)
-    //       // getBreedData();
-    //       onRefresh();
-    //       setSuccessMsg(true);
-    //     } else if (res.status == '222' || res.status == '201') {
-    //       console.log('This record is in use. Cannot be deleted!');
-    //       setErrorMsg(true);
-    //     } else if (res.status == '202') {
-    //       console.log('Default master data cannot be deleted!');
-    //       setinfoMsg(true);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+  const onDelete = async (item) => {
+    let newListDel = selectedItems;
+    console.log(newListDel);
+    await axios
+      .delete(`/breed/${newListDel}`)
+      .then((res) => {
+        // console.log(res.data);
+        if (res.status === 200) {
+          console.log('Breed deleted');
+          // setVaccineData(res.data)
+          // getBreedData();
+          onRefresh();
+          setSuccessMsg(true);
+        } else if (res.status == '222' || res.status == '201') {
+          console.log('This record is in use. Cannot be deleted!');
+          setErrorMsg(true);
+        } else if (res.status == '202') {
+          console.log('Default master data cannot be deleted!');
+          setinfoMsg(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  console.log(item, 'item.age');
+  // console.log(item, 'item.age');
 
   //Accordion Content view
   return (
@@ -262,7 +261,7 @@ const renderContent = (item, _) => {
         <TouchableOpacity style={styles.petListButton} onPress={() => getIndividualVisitHistoryDetails(item)}>
           <Text style={styles.accordionButton}>Visit History</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.petListDELButton} onPress={onDelete}>
+        <TouchableOpacity style={styles.petListDELButton} onPress={() => onDelete(item)}>
           <MaterialIcons name='delete' color={'#fff'} size={25} />
         </TouchableOpacity>
       </View>

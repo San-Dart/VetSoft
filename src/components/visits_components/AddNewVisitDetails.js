@@ -451,8 +451,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
   };
 
   const handleVisitPurposeChange = (value) => {
-    // console.log(value);
-
     if (value.visit_purpose == 'Vaccination') {
       setVaccinationData(true);
     } else {
@@ -461,7 +459,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
 
     setFormData({
       ...formData,
-      visit_purpose: value.id,
+      visit_purpose: value,
     });
   };
 
@@ -524,16 +522,28 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     });
   };
 
+  // for weight
   const handleWeightChange = (value) => {
     setWeightUnit(value.value);
   };
-
   const handlePetWeightChange = (value) => {
     if (value == '') {
       setWeight(0);
     } else {
       setWeight(parseInt(value));
     }
+    WeightSet(value);
+  };
+  const handlePetWeightincrement = (value) => {
+    setWeight((prevweight) => prevweight + 1);
+    WeightSet(weight);
+  };
+  const handlePetWeightdecrement = (value) => {
+    setWeight((prevweight) => prevweight - 1);
+    WeightSet(weight);
+  };
+  const WeightSet = (value) => {
+    console.log(formData.weight, 'weii');
     setFormData({
       ...formData,
       weight: value,
@@ -864,14 +874,17 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                 <Text style={styles.formLabel}>Visit Purpose</Text>
 
                 {/* Custom Dropdown */}
-
                 <CustomDropdown
                   handleAddEvent={handleAddNewVisitPurpose}
                   onChange={handleVisitPurposeChange}
                   buttonLabel={'Add new visit purpose'}
                   dropdownLabel={'General Checkup'}
-                  // defaultValue={5}
+                  defaultValue={formData.visit_purpose}
                   data={visitPurposeData}
+                  // enableSearch={false}
+                  // dropdownType={'multiple'}
+                  // labelField='label'
+                  // valueField='id'
                 />
               </View>
 
@@ -923,11 +936,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                         alignItems: 'center',
                       }}
                     >
-                      <TouchableOpacity
-                        onPress={(value) => {
-                          setWeight((prevweight) => prevweight + 1);
-                        }}
-                      >
+                      <TouchableOpacity onPress={(value) => handlePetWeightincrement(value)}>
                         <MaterialIcons name='keyboard-arrow-up' color={'#d4d2d2'} size={20} />
                       </TouchableOpacity>
                     </View>
@@ -938,21 +947,14 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                         alignItems: 'center',
                       }}
                     >
-                      <TouchableOpacity
-                        onPress={(value) => {
-                          setWeight((prevweight) => prevweight - 1);
-                        }}
-                        disabled={weight == 0}
-                      >
+                      <TouchableOpacity onPress={(value) => handlePetWeightdecrement(value)} disabled={weight == 0}>
                         <MaterialIcons name='keyboard-arrow-down' color={'#d4d2d2'} size={20} />
                       </TouchableOpacity>
                     </View>
                   </View>
                   <View style={{ width: '70%' }}>
                     <CustomDropdown
-                      // handleAddEvent={handleAddNewVisitPurpose}
                       onChange={(value) => handleWeightChange(value)}
-                      // buttonLabel={"Eg: kg / g"}
                       isButton={false}
                       dropdownType={'single'}
                       dropdownLabel={'Kilogram(s)'}
@@ -1482,7 +1484,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                   enableSearch={true}
                   labelField='branch'
                   valueField='id'
-                  // defaultValue={formData && formData.visit_purpose}
+                  defaultValue={formData && formData.visit_purpose}
                   data={branchData}
                   dropdownLabel={'Select Branch'}
                 />
