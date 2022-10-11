@@ -13,7 +13,7 @@ import CustomDropdown from '../CustomDropdown/CustomDropdown';
 
 const PetDetails = ({ route, navigation }) => {
   const params = route.params;
-  // console.log("params", params);
+  console.log('params', params);
   const [formData, setFormData] = useState({
     pet_name: '',
     pet_type_id: '',
@@ -21,12 +21,11 @@ const PetDetails = ({ route, navigation }) => {
     pet_color: '',
     pet_age: '',
     weight: '',
-    weightUnit: '',
-    heightUnit: '',
     height: '',
     pet_owner_id: '',
     special_note: '',
     branch_id: '',
+    dead_date: '',
   });
 
   const [breedData, setBreedData] = useState([]);
@@ -62,9 +61,7 @@ const PetDetails = ({ route, navigation }) => {
       pet_color: params.pet_color,
       pet_age: params.pet_age,
       weight: params.weight,
-      weight: params.weightUnit,
       height: params.height,
-      height: params.heightUnit,
       pet_owner_id: params.pet_owner_id.id,
       special_note: params.special_note,
       branch_id: params.branch_id,
@@ -73,6 +70,7 @@ const PetDetails = ({ route, navigation }) => {
     getBreedData();
     getPetColorData();
     getOwnerData();
+    getBranchData();
   }, []);
 
   const getPetTypeData = () => {
@@ -161,6 +159,30 @@ const PetDetails = ({ route, navigation }) => {
           });
         });
         setPetOwnerData(petOwnerData);
+        // console.log(petOwnersData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getBranchData = () => {
+    let userClinicId = route.params.userDetails.clinic.id;
+    console.log(userClinicId);
+    let branchData = branchData;
+    branchData = [];
+    axios
+      .get(`/clinic/branch/${userClinicId}`)
+      .then((res) => {
+        console.log('branch', res.data);
+        res.data.map((element, index) => {
+          branchData.push({
+            id: element.id,
+            branch: element.branch,
+            title: `${element.branch}`,
+          });
+        });
+        setBranchData(res.data);
         // console.log(petOwnersData);
       })
       .catch((err) => {
@@ -324,8 +346,8 @@ const PetDetails = ({ route, navigation }) => {
   // };
 
   const onSubmit = () => {
-    formData.weight = formData.weight + ' ' + formData.weightUnit;
-    formData.height = formData.height + ' ' + formData.heightUnit;
+    formData.weight = formData.weight + ' ' + weightUnit;
+    formData.height = formData.height + ' ' + heightUnit;
 
     if (formData.pet_name == '') {
       scrollRef.current?.scrollTo({
@@ -421,7 +443,8 @@ const PetDetails = ({ route, navigation }) => {
                 <Text style={styles.required}>*</Text>
               </View>
               <TextInput
-                placeholder={formData.pet_name}
+                placeholder={params.pet_name}
+                placeholderStyle={{ color: '#00000070', fontSize: 12 }}
                 style={styles.formTextInput}
                 onChangeText={(value) => {
                   value && handlePetName(value);
@@ -561,7 +584,7 @@ const PetDetails = ({ route, navigation }) => {
                 {text ? (
                   <Text style={{ color: '#000' }}>{text}</Text>
                 ) : (
-                  <Text style={{ color: '#d4d2d2' }}>Select date</Text>
+                  <Text style={{ color: '#d4d2d2' }}>{params.pet_age}</Text>
                 )}
 
                 <MaterialIcons name='calendar-today' color={'#d4d2d2'} size={20} />
@@ -839,7 +862,7 @@ const PetDetails = ({ route, navigation }) => {
               <Text style={styles.formLabel}>Special Note</Text>
               <TextInput
                 style={styles.textArea}
-                placeholder='Anything like conical illness or 2 headed or 3 fingers etc'
+                placeholder={params.special_note}
                 placeholderTextColor='#d4d2d2'
                 numberOfLines={7}
                 multiline={true}
@@ -951,6 +974,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#d4d2d2',
+    fontSize: 15,
+    textTransform: 'capitalize',
+    padding: 10,
   },
   textArea: {
     backgroundColor: '#fff',
