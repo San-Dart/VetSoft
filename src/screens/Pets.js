@@ -192,12 +192,6 @@ const Pets = ({ route, navigation }) => {
           </TouchableOpacity>
           {/* <FAB style={styles.fab} medium icon='plus' color='#fff' onPress={() => navigation.navigate('AddPet')} /> */}
         </View>
-        {/* <View>
-          <FAB style={styles.fab} medium icon='home' color='#fff' onPress={() => navigation.navigate('Dashboard')} />
-        </View> */}
-        {/* <View>
-          <FAB style={styles.fab} medium icon='delete' color='#fff' onPress={onDelete} />
-        </View> */}
       </View>
     </>
   );
@@ -219,16 +213,12 @@ const renderContent = (item, _) => {
   };
 
   const onDelete = async (item) => {
-    let newListDel = selectedItems;
-    console.log(newListDel);
+    let newListDel = item;
     await axios
       .delete(`/breed/${newListDel}`)
       .then((res) => {
-        // console.log(res.data);
         if (res.status === 200) {
           console.log('Breed deleted');
-          // setVaccineData(res.data)
-          // getBreedData();
           onRefresh();
           setSuccessMsg(true);
         } else if (res.status == '222' || res.status == '201') {

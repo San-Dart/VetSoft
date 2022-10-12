@@ -598,7 +598,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
   };
 
   const onToggleSwitch1 = (value) => {
-    // alert(!isSwitchOnSymptoms);
     setClientAccess(value);
     setIsSwitchOnSymptoms(value);
     setFormData({
