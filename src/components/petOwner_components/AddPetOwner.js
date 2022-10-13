@@ -245,6 +245,8 @@ const AddPetOwner = ({ route, navigation }) => {
       .post(`petOwner`, formData)
       .then((res) => {
         // console.log('Response2', res);
+        console.log('Response2', res.data);
+
         if (res.status == '200') {
           // navigation.navigate('petSubmitPage')
           console.log('Pet Owner Registered Successfully');
