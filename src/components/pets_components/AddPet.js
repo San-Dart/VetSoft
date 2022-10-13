@@ -63,7 +63,6 @@ const AddPet = memo(({ route, navigation }) => {
   // End of switch
 
   // date picker
-
   const [date, setDate] = useState(new Date());
   const [deadDate, setDeadDate] = useState(new Date());
 
@@ -75,8 +74,8 @@ const AddPet = memo(({ route, navigation }) => {
 
   const [text, setText] = useState('');
   const [deadText, setDeadText] = useState('No Date Selected');
-
   // End of date picker
+
   const isFocused = useIsFocused();
 
   useEffect(() => {

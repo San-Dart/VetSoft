@@ -190,14 +190,8 @@ const Pets = ({ route, navigation }) => {
           <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddPet')}>
             <Text style={{ color: '#fff' }}>+ Add Pet</Text>
           </TouchableOpacity>
-          {/* <FAB style={styles.fab} medium icon='plus' color='#fff' onPress={() => navigation.navigate('AddPet')} /> */}
+          {/* {/ <FAB style={styles.fab} medium icon='plus' color='#fff' onPress={() => navigation.navigate('AddPet')} /> /} */}
         </View>
-        {/* <View>
-          <FAB style={styles.fab} medium icon='home' color='#fff' onPress={() => navigation.navigate('Dashboard')} />
-        </View> */}
-        {/* <View>
-          <FAB style={styles.fab} medium icon='delete' color='#fff' onPress={onDelete} />
-        </View> */}
       </View>
     </>
   );
@@ -219,16 +213,12 @@ const renderContent = (item, _) => {
   };
 
   const onDelete = async (item) => {
-    let newListDel = item.id;
-    console.log(newListDel);
+    let newListDel = item;
     await axios
       .delete(`/breed/${newListDel}`)
       .then((res) => {
-        console.log('Responce' + res);
         if (res.status === 200) {
           console.log('Breed deleted');
-          // setVaccineData(res.data)
-          // getBreedData();
           onRefresh();
           setSuccessMsg(true);
         } else if (res.status == '222' || res.status == '201') {
@@ -236,7 +226,6 @@ const renderContent = (item, _) => {
           setErrorMsg(true);
         } else if (res.status == '202') {
           console.log('Default master data cannot be deleted!');
-          x;
           setinfoMsg(true);
         }
       })
@@ -291,7 +280,7 @@ const renderHeader = (item, _) => {
           paddingHorizontal: 3,
         }}
       >
-        {/* For Pet Icon */}
+        {/ For Pet Icon /}
         <View
           style={{
             padding: 5,
@@ -309,7 +298,7 @@ const renderHeader = (item, _) => {
           )}
         </View>
 
-        {/* For Pet Details */}
+        {/ For Pet Details /}
         <View
           style={{
             flexDirection: 'row',

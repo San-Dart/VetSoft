@@ -4,29 +4,30 @@ import { Dialog, Portal, Paragraph } from 'react-native-paper';
 import { Button } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'react-native-axios';
-import DatePicker from 'react-native-datepicker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PageHeader from '../../Header_Component/PageHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
+import { Switch } from 'react-native-paper';
 
 const PetDetails = ({ route, navigation }) => {
   const params = route.params;
-  // console.log("params", params);
+  console.log('params', params);
   const [formData, setFormData] = useState({
     pet_name: '',
     pet_type_id: '',
     breed_id: '',
     pet_color: '',
     pet_age: '',
+    dead_date: '',
     weight: '',
-    weightUnit: '',
-    heightUnit: '',
     height: '',
     pet_owner_id: '',
     special_note: '',
     branch_id: '',
+    is_dead: '',
+    comment: '',
   });
 
   const [breedData, setBreedData] = useState([]);
@@ -49,9 +50,22 @@ const PetDetails = ({ route, navigation }) => {
 
   // date picker
   const [date, setDate] = useState(new Date());
+  const [deadDate, setDeadDate] = useState(new Date());
+
   const [mode, setMode] = useState('date');
+  const [deadMode, setDeadMode] = useState('date');
+
   const [show, setShow] = useState(false);
+  const [deadShow, setDeadShow] = useState(false);
+
   const [text, setText] = useState('');
+  const [deadText, setDeadText] = useState('');
+  // End of date picker
+
+  // switch
+
+  const [isActive, setIsActive] = useState(false);
+  const [isDead, setIsDead] = useState(false);
 
   useEffect(() => {
     setFormData({
@@ -62,17 +76,18 @@ const PetDetails = ({ route, navigation }) => {
       pet_color: params.pet_color,
       pet_age: params.pet_age,
       weight: params.weight,
-      weight: params.weightUnit,
       height: params.height,
-      height: params.heightUnit,
       pet_owner_id: params.pet_owner_id.id,
       special_note: params.special_note,
+      comment: params.comment,
       branch_id: params.branch_id,
+      dead_date: params.dead_date,
     });
     getPetTypeData();
     getBreedData();
     getPetColorData();
     getOwnerData();
+    getBranchData();
   }, []);
 
   const getPetTypeData = () => {
@@ -168,6 +183,30 @@ const PetDetails = ({ route, navigation }) => {
       });
   };
 
+  const getBranchData = () => {
+    let userClinicId = route.params.userDetails.clinic.id;
+    console.log(userClinicId);
+    let branchData = branchData;
+    branchData = [];
+    axios
+      .get(`/clinic/branch/${userClinicId}`)
+      .then((res) => {
+        console.log('branch', res.data);
+        res.data.map((element, index) => {
+          branchData.push({
+            id: element.id,
+            branch: element.branch,
+            title: `${element.branch}`,
+          });
+        });
+        setBranchData(res.data);
+        // console.log(petOwnersData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handlePetName = (value) => {
     setFormData({
       ...formData,
@@ -197,12 +236,17 @@ const PetDetails = ({ route, navigation }) => {
   };
 
   const handleDob = (value) => {
-    console.log(value, 'date');
     setFormData({
       ...formData,
       pet_age: value,
     });
-    console.log(formData.pet_age, 'date');
+  };
+
+  const handleDod = (value) => {
+    setFormData({
+      ...formData,
+      dead_date: value,
+    });
   };
 
   const handleWeight = (value) => {
@@ -240,6 +284,22 @@ const PetDetails = ({ route, navigation }) => {
     let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
     setText(fDate);
     handleDob(fDate);
+  };
+
+  const showDeadMode = (currentDeadMode) => {
+    setDeadShow(true);
+    setDeadMode(currentDeadMode);
+  };
+
+  const onChangeDeath = (event, selectedDate) => {
+    const currentDeadDate = selectedDate || date;
+    setDeadShow(Platform.OS === 'ios');
+    setDeadDate(currentDeadDate);
+
+    let deathDate = new Date(currentDeadDate);
+    let dDate = deathDate.getFullYear() + '-' + (deathDate.getMonth() + 1) + '-' + deathDate.getDate();
+    setDeadText(dDate);
+    handleDod(dDate);
   };
 
   // for weight
@@ -303,10 +363,36 @@ const PetDetails = ({ route, navigation }) => {
     });
   };
 
+  const handlecommentChange = (value) => {
+    setFormData({
+      ...formData,
+      comment: value,
+    });
+  };
+
   const handleRegisteringBranchChange = (value) => {
     setFormData({
       ...formData,
       branch_id: value.id,
+    });
+  };
+
+  const onToggleSwitch1 = (value) => {
+    setIsActive(value);
+    setIsDead(!value);
+    handleIsDeadChange(isDead);
+  };
+
+  const onToggleSwitch2 = (value) => {
+    setIsDead(value);
+    setIsActive(!value);
+    handleIsDeadChange(isDead);
+  };
+
+  const handleIsDeadChange = (value) => {
+    setFormData({
+      ...formData,
+      is_dead: value,
     });
   };
 
@@ -324,8 +410,8 @@ const PetDetails = ({ route, navigation }) => {
   // };
 
   const onSubmit = () => {
-    formData.weight = formData.weight + ' ' + formData.weightUnit;
-    formData.height = formData.height + ' ' + formData.heightUnit;
+    formData.weight = formData.weight + ' ' + weightUnit;
+    formData.height = formData.height + ' ' + heightUnit;
 
     if (formData.pet_name == '') {
       scrollRef.current?.scrollTo({
@@ -421,7 +507,8 @@ const PetDetails = ({ route, navigation }) => {
                 <Text style={styles.required}>*</Text>
               </View>
               <TextInput
-                placeholder={formData.pet_name}
+                placeholder={params.pet_name}
+                placeholderStyle={{ color: '#00000070', fontSize: 12 }}
                 style={styles.formTextInput}
                 onChangeText={(value) => {
                   value && handlePetName(value);
@@ -561,7 +648,7 @@ const PetDetails = ({ route, navigation }) => {
                 {text ? (
                   <Text style={{ color: '#000' }}>{text}</Text>
                 ) : (
-                  <Text style={{ color: '#d4d2d2' }}>Select date</Text>
+                  <Text style={{ color: '#d4d2d2' }}>{params.pet_age}</Text>
                 )}
 
                 <MaterialIcons name='calendar-today' color={'#d4d2d2'} size={20} />
@@ -839,7 +926,7 @@ const PetDetails = ({ route, navigation }) => {
               <Text style={styles.formLabel}>Special Note</Text>
               <TextInput
                 style={styles.textArea}
-                placeholder='Anything like conical illness or 2 headed or 3 fingers etc'
+                placeholder={params.special_note}
                 placeholderTextColor='#d4d2d2'
                 numberOfLines={7}
                 multiline={true}
@@ -861,6 +948,87 @@ const PetDetails = ({ route, navigation }) => {
                 defaultValue={formData && formData.visit_purpose}
                 data={branchData}
                 dropdownLabel={'Select Branch'}
+              />
+            </View>
+
+            <View style={{ flexDirection: 'row', margin: 10, paddingHorizontal: 10 }}>
+              <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Active</Text>
+                  <Text style={styles.required}>*</Text>
+                </View>
+                <Switch
+                  value={isActive}
+                  onValueChange={(value) => onToggleSwitch1(value)}
+                  trackColor={{ false: '#d4d2d2', true: 'green' }}
+                  thumbColor={'#fff'}
+                />
+              </View>
+              <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Mark Dead</Text>
+
+                <Switch
+                  value={isDead}
+                  onValueChange={(value) => onToggleSwitch2(value)}
+                  trackColor={{ false: '#d4d2d2', true: 'green' }}
+                  thumbColor={'#fff'}
+                />
+              </View>
+            </View>
+
+            <View style={styles.formItem}>
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.formLabel}>Date Of Death</Text>
+                <Text style={styles.required}>*</Text>
+              </View>
+
+              <TouchableOpacity
+                disabled={!isDead}
+                onPress={() => showDeadMode('date')}
+                style={{
+                  borderWidth: 1,
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  borderColor: '#d4d2d2',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: 10,
+                }}
+              >
+                {deadText ? (
+                  <Text style={{ color: '#000' }}>{deadText}</Text>
+                ) : (
+                  <Text style={{ color: '#d4d2d2' }}>{params.dead_date}</Text>
+                )}
+
+                <MaterialIcons name='calendar-today' color={'#d4d2d2'} size={20} />
+              </TouchableOpacity>
+
+              <View style={styles.formInsideHeadDate}>
+                {deadShow && (
+                  <DateTimePicker
+                    testID='dateTimePicker'
+                    value={deadDate}
+                    mode={deadMode}
+                    display='default'
+                    onChange={onChangeDeath}
+                    onChangeText={(value) => {
+                      handleDod(value);
+                    }}
+                  />
+                )}
+              </View>
+            </View>
+
+            <View style={styles.formItem}>
+              <Text style={styles.formLabel}>Comment</Text>
+              <TextInput
+                style={styles.textArea}
+                placeholder={'Reason for death or any other comment for reference'}
+                placeholderTextColor='#d4d2d2'
+                numberOfLines={7}
+                multiline={true}
+                onChangeText={(value) => handlecommentChange(value)}
               />
             </View>
 
@@ -951,15 +1119,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#d4d2d2',
+    fontSize: 15,
+    textTransform: 'capitalize',
+    padding: 10,
   },
   textArea: {
-    backgroundColor: '#fff',
-    borderRadius: 15,
-
-    paddingHorizontal: 15,
-
+    borderRadius: 10,
+    paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: '#d4d2d2',
+    fontSize: 15,
+    textTransform: 'capitalize',
   },
   datePickerStyle: {
     width: '80%',
