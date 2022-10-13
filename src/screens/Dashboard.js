@@ -6,7 +6,7 @@ import axios from 'react-native-axios';
 import { Header } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { color } from 'react-native-elements/dist/helpers';
+// import { color } from 'react-native-elements/dist/helpers';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
