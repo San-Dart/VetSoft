@@ -9,6 +9,7 @@ import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import PageHeader from '../../Header_Component/PageHeader';
 
 const renderContent = (item, _) => {
   // console.log("renderContent", item);
@@ -666,6 +667,7 @@ const PetOwnerDetail = ({ route, navigation }) => {
 
   return (
     <View style={{ backgroundColor: '#f2f4fc' }}>
+      <PageHeader header={'Pet Owners'} />
       <Text style={styles.owner_detail}>
         Pet of {owner_name} / {owner_mobile}
       </Text>

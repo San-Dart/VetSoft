@@ -618,7 +618,7 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='PetOwnerDetail'
                 component={PetOwnerDetail}
-                options={{ title: 'Pet Owner Details' }}
+                options={{ title: 'Pet Owner Details', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}

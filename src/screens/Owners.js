@@ -56,6 +56,28 @@ const Owners = ({ route, element, navigation }) => {
         console.log(err);
       });
   };
+
+  // const Temp_Del = async (element) => {
+  //   // console.log('Temp_Del', element.id);
+  //   await axios
+  //     .delete(`/petOwner/${element.id}`)
+  //     .then((res) => {
+  //       if (res.status === 200) {
+  //         console.log('Animal deleted');
+  //         onRefresh();
+  //         // setSuccessMsg(true);
+  //       } else if (res.status == '222' || res.status == '201') {
+  //         console.log('This record is in use. Cannot be deleted!');
+  //         // setErrorMsg(true);
+  //       } else if (res.status == '202') {
+  //         console.log('Default master data cannot be deleted!');
+  //         // setinfoMsg(true);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(1200).then(() => {
@@ -178,7 +200,11 @@ const Owners = ({ route, element, navigation }) => {
             backgroundColor: '#f2f4fc',
           }}
           placement='right'
-          leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
+          leftComponent={
+            <View style={{ backgroundColor: '#006766', borderRadius: 25, padding: 5 }}>
+              <MaterialCommunityIcons name='paw' color={'#fff'} size={20} />
+            </View>
+          }
           centerComponent={
             <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
               <MaterialIcons name='home' color={'#000'} size={25} />
@@ -299,6 +325,9 @@ const Owners = ({ route, element, navigation }) => {
                           >
                             {Petlength}
                           </Text>
+                          {/* <TouchableOpacity onPress={() => Temp_Del(element)}>
+                            <Text>Delete</Text>
+                          </TouchableOpacity> */}
                           <Text
                             style={{
                               color: '#000',
