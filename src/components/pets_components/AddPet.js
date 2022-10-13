@@ -94,7 +94,7 @@ const AddPet = memo(({ route, navigation }) => {
     let userClinicId = route.params.userDetails.clinic.id;
     // console.log(userClinicId);
     axios
-      .get(`petOwner/clinic/${userClinicId}`)
+      .get(`petOwner`)
       .then((res) => {
         console.log('petowner', res.data);
         res.data.map((element, index) => {

@@ -191,16 +191,14 @@ export default function Dashboard({ route, navigation }) {
                   <MaterialCommunityIcons name={item.icon} color={'#fff'} size={20} />
                 </View>
 
-                <View style={{ width: '90%', marginTop: 10 }}>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View>
-                      <Text style={styles.itemheading}>{item.heading1}</Text>
-                      <Text style={styles.itemCode}>{item.value1}</Text>
-                    </View>
-                    <View>
-                      <Text style={styles.itemheading}>{item.heading2}</Text>
-                      <Text style={styles.itemCode}>{item.value2}</Text>
-                    </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '90%', marginTop: 5 }}>
+                  <View>
+                    <Text style={styles.itemheading}>{item.heading1}</Text>
+                    <Text style={styles.itemCode}>{item.value1}</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.itemheading}>{item.heading2}</Text>
+                    <Text style={styles.itemCode}>{item.value2}</Text>
                   </View>
                 </View>
 

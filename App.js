@@ -573,7 +573,12 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='VisitHistory'
                 component={VisitHistory}
-                options={{ title: 'Visit History' }}
+                options={{
+                  title: 'Visit History',
+                  headerShown: false,
+                  presentation: 'transparentModal',
+                  statusBarColor: '#00000099',
+                }}
               />
               {/* <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="AfterSubmit" component={AfterSubmit} options={{ title: 'After Submit' }}/> */}
               <Stack.Screen

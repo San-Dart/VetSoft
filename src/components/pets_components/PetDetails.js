@@ -166,7 +166,7 @@ const PetDetails = ({ route, navigation }) => {
     let petOwnerData = petOwnerData;
     petOwnerData = [];
     await axios
-      .get(`petOwner/clinic/${userClinicId}`)
+      .get(`petOwner`)
       .then((res) => {
         console.log('petOwnerData', res.data);
         res.data.map((element, index) => {

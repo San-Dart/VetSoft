@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, Text, View, StyleSheet, TouchableOpacity, TouchableOpacityBase } from 'react-native';
+import { IconButton } from 'react-native-paper';
 import axios from 'react-native-axios';
-import { Divider, Badge } from 'react-native-paper';
+// import { Divider, Badge } from 'react-native-paper';
 
 const VisitHistory = ({ route, navigation }) => {
+  const [petData, setPetData] = useState([]);
   const [visitHistory, setVisitHistory] = useState([]);
   let colors = ['#CADEDF', '#16796F'];
   let textColor = ['#000', '#fff'];
@@ -11,17 +13,18 @@ const VisitHistory = ({ route, navigation }) => {
 
   useEffect(() => {
     getVisitHistoryById();
+    petDetail();
   }, []);
 
   const getVisitHistoryById = () => {
     let pet_id = route.params.petData;
-    // console.log(pet_id);
+    console.log(pet_id);
     axios
       .get(`visitDetail/pet/${pet_id}`)
       .then((res) => {
         console.log(res.data);
         if (res.status === 200) {
-          // console.log(res.data);
+          console.log(res.data);
           // VisitHistory = res.data;
           setVisitHistory(res.data);
         }
@@ -31,94 +34,148 @@ const VisitHistory = ({ route, navigation }) => {
       });
   };
 
+  const petDetail = async () => {
+    let userClinicId = route.params.userDetails.clinic.id;
+    console.log('userClinicId', userClinicId);
+    await axios
+      .get(`/pet/clinic/${userClinicId}`)
+      .then((res) => {
+        if (res.status === 200) {
+          let petData = res.data;
+          setPetData(petData);
+          console;
+          setFilteredDataSource(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log('Error');
+      });
+  };
+
   const onHistoryClick = (id) => {
     navigation.navigate('VisitHistoryDetails', { visitData: id });
-    console.log(id);
+    // console.log(id);
   };
 
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {visitHistory.map((element, index) => (
-          <>
-            {/* {console.log("element", element)} */}
-            {element.is_submited === '1' ? (
-              <View style={styles.saved_badge}>
-                <Text style={styles.savedBadge}>Submitted</Text>
-              </View>
-            ) : (
-              <View style={styles.draft_badge}>
-                <Text style={styles.draftBadge}>Draft</Text>
-              </View>
-            )}
-
-            <TouchableOpacity
-              onPress={() => onHistoryClick(element)}
-              style={{
-                backgroundColor: colors[index % colors.length],
-                borderRadius: 5,
-                marginVertical: 10,
-                // elevation: 1,
-                marginHorizontal: 10,
-                zIndex: 0,
-                borderWidth: 0.6,
-                borderColor: '#00676640',
-              }}
-            >
-              <View style={styles.visitHistoryListHead}>
-                <View style={styles.wrapper}>
-                  <View style={styles.wrapper_content_left}>
-                    <Text
-                      style={{
-                        textAlign: 'left',
-                        color: textColor[index % textColor.length],
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {element.pet_id.pet_name} / {element.owner_name_id.pet_owner_name}
-                    </Text>
-                    <Text
-                      style={{
-                        textAlign: 'left',
-                        color: textColor[index % textColor.length],
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {element.visit_purpose.visit_purpose}
-                    </Text>
-                  </View>
-
-                  <View style={styles.wrapper_content_right}>
-                    <Text
-                      style={{
-                        textAlign: 'right',
-                        color: textColor[index % textColor.length],
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {element.visit_type.visit_type}
-                    </Text>
-                    <Text
-                      style={{
-                        textAlign: 'right',
-                        color: textColor[index % textColor.length],
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {element.visited_clinic_id.clinic_name}
-                    </Text>
-                  </View>
-                </View>
-              </View>
+      <View style={styles.container}>
+        <View style={{ borderRadius: 10, backgroundColor: '#f2f4fc', margin: 20, paddingHorizontal: 15 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Visit History</Text>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <IconButton icon='close' />
             </TouchableOpacity>
-          </>
-        ))}
-      </ScrollView>
+          </View>
+
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {visitHistory.map((element, index) => (
+              <>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Text>
+                    {element.pet_id.pet_type_id} / {element.pet_id.breed_id}
+                  </Text>
+                  <Text style={{ color: '#006796', fontWeight: 'bold' }}>{element.pet_id.pet_age}</Text>
+                </View>
+                {/* {console.log('element', element)} */}
+
+                {/* {element.is_submited === '1' ? (
+                  <View style={styles.saved_badge}>
+                    <Text style={styles.savedBadge}>Submitted</Text>
+                  </View>
+                ) : (
+                  <View style={styles.draft_badge}>
+                    <Text style={styles.draftBadge}>Draft</Text>
+                  </View>
+                )} */}
+
+                <TouchableOpacity
+                  onPress={() => onHistoryClick(element)}
+                  style={{
+                    backgroundColor: '#fff',
+                    borderRadius: 10,
+                    marginVertical: 10,
+                    borderWidth: 1,
+                    borderColor: '#00000019',
+                  }}
+                >
+                  <View style={styles.visitHistoryListHead}>
+                    <View style={styles.wrapper}>
+                      <View style={styles.wrapper_content_left}>
+                        <Text
+                          style={{
+                            textAlign: 'left',
+                            color: textColor[index % textColor.length],
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {element.pet_id.pet_name} / {element.owner_name_id.pet_owner_name}
+                        </Text>
+                        <Text
+                          style={{
+                            textAlign: 'left',
+                            color: textColor[index % textColor.length],
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {element.visit_purpose.visit_purpose}
+                        </Text>
+                      </View>
+
+                      <View style={styles.wrapper_content_right}>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            color: textColor[index % textColor.length],
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {element.visit_type.visit_type}
+                        </Text>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            color: textColor[index % textColor.length],
+                            fontWeight: 'bold',
+                          }}
+                        >
+                          {element.visited_clinic_id.clinic_name}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </>
+            ))}
+          </ScrollView>
+
+          <View>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.submit}>
+              <Text style={styles.subText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  submit: {
+    padding: 10,
+  },
+  subText: {
+    marginBottom: 10,
+    backgroundColor: '#0e4377',
+    alignItems: 'center',
+    width: '100%',
+    color: '#fff',
+    textAlign: 'center',
+    paddingVertical: 15,
+    borderRadius: 10,
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
   visitHistoryListHead: {
     width: '100%',
   },
@@ -181,6 +238,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#00000099',
   },
 });
 
