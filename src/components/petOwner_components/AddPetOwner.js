@@ -22,7 +22,7 @@ const AddPetOwner = ({ route, navigation }) => {
     state: '',
     city: '',
     branch_id: '',
-    clinic_id: '',
+    // clinic_id: '',
   });
 
   const [successMsg, setSuccessMsg] = useState(false);
@@ -221,15 +221,36 @@ const AddPetOwner = ({ route, navigation }) => {
     });
   };
 
+  // axios
+  // .post('/pet', formData)
+  // .then((res) => {
+  //   console.log('Registered Data', res.data);
+  //   if (res.status == '200') {
+  //     // console.log("Registered Data", res.data);
+  //     if (route.params.fromVisits) {
+  //       navigation.goBack();
+  //     } else {
+  //       navigation.navigate('petSubmitPage', { registeredPetData: res.data.registeredPetData });
+  //     }
+  //   }
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  // });
+
   const onSubmit = async () => {
     console.log('Form_Data', formData);
     await axios
+      // .post('petOwner/clinic/', formData)
       .post(`petOwner`, formData)
       .then((res) => {
+        // console.log('Response2', res);
         if (res.status == '200') {
           // navigation.navigate('petSubmitPage')
           console.log('Pet Owner Registered Successfully');
           setSuccessMsg(true);
+        } else {
+          console.log('Axios errror ');
         }
       })
       .catch((err) => {

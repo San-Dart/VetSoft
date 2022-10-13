@@ -219,12 +219,12 @@ const renderContent = (item, _) => {
   };
 
   const onDelete = async (item) => {
-    let newListDel = selectedItems;
+    let newListDel = item.id;
     console.log(newListDel);
     await axios
       .delete(`/breed/${newListDel}`)
       .then((res) => {
-        // console.log(res.data);
+        console.log('Responce' + res);
         if (res.status === 200) {
           console.log('Breed deleted');
           // setVaccineData(res.data)
@@ -236,6 +236,7 @@ const renderContent = (item, _) => {
           setErrorMsg(true);
         } else if (res.status == '202') {
           console.log('Default master data cannot be deleted!');
+          x;
           setinfoMsg(true);
         }
       })

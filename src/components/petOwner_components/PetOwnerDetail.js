@@ -665,7 +665,7 @@ const PetOwnerDetail = ({ route, navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: '#f2f4fc' }}>
       <Text style={styles.owner_detail}>
         Pet of {owner_name} / {owner_mobile}
       </Text>

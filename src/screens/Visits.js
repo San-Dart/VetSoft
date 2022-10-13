@@ -98,7 +98,6 @@ const Visits = ({ route, navigation, selected }) => {
     await axios
       .get(`visitDetail/clinic/${userClinicId}`)
       .then((res) => {
-        // console.log(res.data);
         if (res.status === 200) {
           // console.log(res.data);
           // VisitHistory = res.data;
@@ -399,7 +398,8 @@ const Visits = ({ route, navigation, selected }) => {
                     <Text>
                       Last Visit: <Text style={{ fontWeight: 'bold' }}>{element.pet_id.last_visit}</Text>
                     </Text>
-                    <Text style={{ fontWeight: 'bold' }}>{element.visit_purpose.visit_purpose}</Text>
+                    <Text> Test </Text>
+                    {/* <Text style={{ fontWeight: 'bold' }}>{element.visit_purpose.visit_purpose}</Text> */}
                   </View>
                   <View
                     style={{

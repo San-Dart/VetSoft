@@ -456,10 +456,10 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     } else {
       setVaccinationData(false);
     }
-
+    console.log('Valueeeeeee', value);
     setFormData({
       ...formData,
-      visit_purpose: value,
+      visit_purpose: value.visit_purpose,
     });
   };
 

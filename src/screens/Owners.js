@@ -42,11 +42,13 @@ const Owners = ({ route, element, navigation }) => {
     let userClinicId = route.params.userDetails.clinic.id;
     console.log('UserClinicId', userClinicId);
     await axios
-      .get(`petOwner/clinic/${userClinicId}`)
+      // .get(`petOwner/clinic/${userClinicId}`)
+      .get(`petOwner`)
       .then((res) => {
         if (res.status === 200) {
-          console.log('data', res.data);
-          setPetOwnerData(res.data);
+          // console.log('data', res.data);
+          let petOwnerData = res.data;
+          setPetOwnerData(petOwnerData);
           setFilteredDataSource(res.data);
         }
       })
@@ -78,7 +80,7 @@ const Owners = ({ route, element, navigation }) => {
 
   // const getSelected = element => selectedItems.includes(element.id);
   const handleOnPress = (element) => {
-    // console.log(element.id);
+    console.log('Element', element.id);
     console.log('filteredDataSource', filteredDataSource);
     if (selectedItems.length) {
       return selectItems(element);
@@ -169,151 +171,153 @@ const Owners = ({ route, element, navigation }) => {
             <BranchFilter userData={route.params.userDetails} />
           </View>
         </View> */}
-      <Header
-        statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
-        containerStyle={{
-          backgroundColor: '#f2f4fc',
-        }}
-        placement='right'
-        leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
-        centerComponent={
-          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
-            <MaterialIcons name='home' color={'#000'} size={25} />
-          </TouchableOpacity>
-        }
-        rightComponent={
-          <TouchableOpacity>
-            <MaterialIcons name='menu' color={'#000'} size={25} />
-          </TouchableOpacity>
-        }
-      />
-      <View style={styles.container} key='pet_1'>
-        <View style={{ marginHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ width: '40%', flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialIcons name='arrow-back-ios' color={'#000'} size={25} />
+      <View style={{ backgroundColor: '#f2f4fc' }}>
+        <Header
+          statusBarProps={{ barStyle: 'dark-content', backgroundColor: '#f2f4fc' }}
+          containerStyle={{
+            backgroundColor: '#f2f4fc',
+          }}
+          placement='right'
+          leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
+          centerComponent={
+            <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
+              <MaterialIcons name='home' color={'#000'} size={25} />
             </TouchableOpacity>
-            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pets Owners</Text>
+          }
+          rightComponent={
+            <TouchableOpacity>
+              <MaterialIcons name='menu' color={'#000'} size={25} />
+            </TouchableOpacity>
+          }
+        />
+        <View style={styles.container} key='pet_1'>
+          <View style={{ marginHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ width: '40%', flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <MaterialIcons name='arrow-back-ios' color={'#000'} size={25} />
+              </TouchableOpacity>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pets Owners</Text>
+            </View>
+            <View style={{ width: '60%', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <Searchbar
+                placeholder='Search'
+                placeholderTextColor={'#00000040'}
+                onChangeText={(text) => searchFilterFunction(text)}
+                value={search}
+                color={'#2f2f7e'}
+                style={{
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                  height: 40,
+                  fontSize: 10,
+                  width: '75%',
+                }}
+                icon={null}
+                iconColor={'#2f2f7e'}
+                // textAlign={'center'}
+              />
+              <BranchFilter userData={route.params.userDetails} />
+            </View>
           </View>
-          <View style={{ width: '60%', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Searchbar
-              placeholder='Search'
-              placeholderTextColor={'#00000040'}
-              onChangeText={(text) => searchFilterFunction(text)}
-              value={search}
-              color={'#2f2f7e'}
-              style={{
-                backgroundColor: '#fff',
-                borderRadius: 10,
-                height: 40,
-                fontSize: 10,
-                width: '75%',
-              }}
-              icon={null}
-              iconColor={'#2f2f7e'}
-              // textAlign={'center'}
-            />
-            <BranchFilter userData={route.params.userDetails} />
-          </View>
-        </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        >
-          <View style={{ marginTop: '2%', width: '96%', alignSelf: 'center' }}>
-            {filteredDataSource.map((element, index) => (
-              <>
-                <Pressable onPress={() => deSelectItems(element)}>
-                  <TouchableOpacity
-                    onPress={() => handleOnPress(element)}
-                    key={element.id}
-                    style={{
-                      marginHorizontal: 10,
-                      marginBottom: 20,
-                    }}
-                    onLongPress={() => selectItems(element)}
-                  >
-                    <View
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          >
+            <View style={{ marginTop: '2%', width: '96%', alignSelf: 'center' }}>
+              {filteredDataSource.map((element, index) => (
+                <>
+                  <Pressable onPress={() => deSelectItems(element)}>
+                    <TouchableOpacity
+                      onPress={() => handleOnPress(element)}
+                      key={element.id}
                       style={{
-                        zIndex: 0,
-                        backgroundColor: '#fff',
-                        marginBottom: 5,
-                        padding: 10,
-                        shadowColor: '#bebebe',
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowOpacity: 0.8,
-                        shadowRadius: 2,
-                        elevation: 10,
-                        borderRadius: 10,
+                        marginHorizontal: 10,
+                        marginBottom: 20,
                       }}
+                      onLongPress={() => selectItems(element)}
                     >
                       <View
                         style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginVertical: 12,
+                          zIndex: 0,
+                          backgroundColor: '#fff',
+                          marginBottom: 5,
+                          padding: 10,
+                          shadowColor: '#bebebe',
+                          shadowOffset: { width: 0, height: 1 },
+                          shadowOpacity: 0.8,
+                          shadowRadius: 2,
+                          elevation: 10,
+                          borderRadius: 10,
                         }}
                       >
-                        <Text
+                        <View
                           style={{
-                            color: '#000',
-                            textAlign: 'left',
-                            fontWeight: 'bold',
-                          }}
-                        >
-                          {element.pet_owner_name}
-                        </Text>
-                        <Text
-                          style={{
-                            color: '#000',
-                            textAlign: 'right',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginVertical: 12,
                           }}
                         >
                           <Text
                             style={{
-                              fontWeight: 'bold',
                               color: '#000',
+                              textAlign: 'left',
+                              fontWeight: 'bold',
                             }}
                           >
-                            Ph-no-
-                          </Text>{' '}
-                          {element.contact_number}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          marginVertical: 12,
-                        }}
-                      >
-                        <Text
+                            {element.pet_owner_name}
+                          </Text>
+                          <Text
+                            style={{
+                              color: '#000',
+                              textAlign: 'right',
+                            }}
+                          >
+                            <Text
+                              style={{
+                                fontWeight: 'bold',
+                                color: '#000',
+                              }}
+                            >
+                              Ph-no-
+                            </Text>{' '}
+                            {element.contact_number}
+                          </Text>
+                        </View>
+                        <View
                           style={{
-                            color: '#000',
-                            textAlign: 'left',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginVertical: 12,
                           }}
                         >
-                          {Petlength}
-                        </Text>
-                        <Text
-                          style={{
-                            color: '#000',
-                            textAlign: 'right',
-                          }}
-                        >
-                          {element.email}
-                        </Text>
+                          <Text
+                            style={{
+                              color: '#000',
+                              textAlign: 'left',
+                            }}
+                          >
+                            {Petlength}
+                          </Text>
+                          <Text
+                            style={{
+                              color: '#000',
+                              textAlign: 'right',
+                            }}
+                          >
+                            {element.email}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                  </TouchableOpacity>
+                    </TouchableOpacity>
 
-                  {selectedItems.includes(element.id) && <View style={styles.overlay} />}
-                </Pressable>
-              </>
-            ))}
-          </View>
-        </ScrollView>
+                    {selectedItems.includes(element.id) && <View style={styles.overlay} />}
+                  </Pressable>
+                </>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
       </View>
       <View style={styles.floatButtons}>
         <View>
