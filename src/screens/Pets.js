@@ -190,7 +190,6 @@ const Pets = ({ route, navigation }) => {
           <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddPet')}>
             <Text style={{ color: '#fff' }}>+ Add Pet</Text>
           </TouchableOpacity>
-          {/* {/ <FAB style={styles.fab} medium icon='plus' color='#fff' onPress={() => navigation.navigate('AddPet')} /> /} */}
         </View>
       </View>
     </>
@@ -280,7 +279,7 @@ const renderHeader = (item, _) => {
           paddingHorizontal: 3,
         }}
       >
-        {/ For Pet Icon /}
+        {/* For Pet Icon */}
         <View
           style={{
             padding: 5,
@@ -298,7 +297,7 @@ const renderHeader = (item, _) => {
           )}
         </View>
 
-        {/ For Pet Details /}
+        {/* For Pet Details */}
         <View
           style={{
             flexDirection: 'row',
