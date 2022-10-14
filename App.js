@@ -601,12 +601,13 @@ export default function App() {
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='petSubmitPage'
                 component={petSubmitPage}
+                options={{ title: 'Registration Completed', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='VisitHistoryDetails'
                 component={VisitHistoryDetails}
-                options={{ title: 'Visit History Detail' }}
+                options={{ title: 'Visit History Detail', headerShown: false }}
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
