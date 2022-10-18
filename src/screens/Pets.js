@@ -212,20 +212,19 @@ const renderContent = (item, _) => {
   };
 
   const onDelete = async (item) => {
+    // console.log('Item', item);
     let newListDel = item;
     await axios
-      .delete(`/breed/${newListDel}`)
+      // .delete(`/breed/${newListDel}`)
+      .get(`/pet/${item.id}`)
       .then((res) => {
         if (res.status === 200) {
+          console.log('Item', res);
           console.log('Breed deleted');
-          onRefresh();
-          setSuccessMsg(true);
         } else if (res.status == '222' || res.status == '201') {
           console.log('This record is in use. Cannot be deleted!');
-          setErrorMsg(true);
         } else if (res.status == '202') {
           console.log('Default master data cannot be deleted!');
-          setinfoMsg(true);
         }
       })
       .catch((err) => {
