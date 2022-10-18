@@ -3,7 +3,7 @@ import { Button, TextInput, Text, View, StyleSheet, ScrollView, TouchableOpacity
 import { Divider, Switch, Dialog, Portal, Paragraph } from 'react-native-paper';
 import DatePicker from 'react-native-datepicker';
 import axios from 'react-native-axios';
-import { Dropdown } from 'react-native-element-dropdown';
+// import { Dropdown } from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import { MultiSelect } from 'react-native-element-dropdown';
@@ -464,7 +464,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
   };
 
   const handleDiseaseChange = (value) => {
-    // console.log("On Change",value);
     setFormData({
       ...formData,
       disease: value.id,
@@ -626,27 +625,27 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     });
   };
 
-  const onHandleSubmit = () => {
-    let data = formData;
-    data.is_submited = true;
-    data.weight = formData.weight + ' ' + weightUnit;
-    data.symptoms_data = formData.symptoms_data && formData.symptoms_data.toString();
-    data.injections_data = formData.injections_data && formData.injections_data.toString();
-    axios
-      .post(`/visitDetail`, data)
-      .then((res) => {
-        // console.log(res.data);
-        if (res.status == '200') {
-          console.log('Successfully added new visit');
-          // navigation.navigate('SubmitNewVisitForm', {visitId: res.data.visit_id});
-          submitRoute(res.data.visit_id);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        // setErrorMsg(true);
-      });
-  };
+  // const onHandleSubmit = () => {
+  //   let data = formData;
+  //   data.is_submited = true;
+  //   data.weight = formData.weight + ' ' + weightUnit;
+  //   data.symptoms_data = formData.symptoms_data && formData.symptoms_data.toString();
+  //   data.injections_data = formData.injections_data && formData.injections_data.toString();
+  //   axios
+  //     .post(`/visitDetail`, data)
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       if (res.status == '200') {
+  //         console.log('Successfully added new visit');
+  //         // navigation.navigate('SubmitNewVisitForm', {visitId: res.data.visit_id});
+  //         submitRoute(res.data.visit_id);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       // setErrorMsg(true);
+  //     });
+  // };
 
   const onSave = () => {
     let data = formData;
@@ -657,7 +656,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     axios
       .post(`/visitDetail`, data)
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         if (res.status == '200') {
           submitMethod(res.data.visit_id);
           // setSuccessMsg(true);
@@ -878,12 +877,8 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                   onChange={handleVisitPurposeChange}
                   buttonLabel={'Add new visit purpose'}
                   dropdownLabel={'General Checkup'}
-                  defaultValue={formData.visit_purpose}
                   data={visitPurposeData}
-                  // enableSearch={false}
-                  // dropdownType={'multiple'}
-                  // labelField='label'
-                  // valueField='id'
+                  // defaultValue={formData.visit_purpose}
                 />
               </View>
 

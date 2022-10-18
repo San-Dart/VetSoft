@@ -139,7 +139,7 @@ const Pets = ({ route, navigation }) => {
             </TouchableOpacity>
             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Pets</Text>
           </View>
-          <View style={{ width: '65%', flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ width: '65%', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
             <Searchbar
               placeholder='Search'
               placeholderTextColor={'#00000040'}
