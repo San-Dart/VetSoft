@@ -224,7 +224,7 @@ const Owners = ({ route, element, navigation }) => {
               </TouchableOpacity>
               <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pets Owners</Text>
             </View>
-            <View style={{ width: '60%', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ width: '60%', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
               <Searchbar
                 placeholder='Search'
                 placeholderTextColor={'#00000040'}
