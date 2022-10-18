@@ -3,7 +3,7 @@ import { Button, TextInput, Text, View, StyleSheet, ScrollView, TouchableOpacity
 import { Divider, Switch, Dialog, Portal, Paragraph } from 'react-native-paper';
 import DatePicker from 'react-native-datepicker';
 import axios from 'react-native-axios';
-import { Dropdown } from 'react-native-element-dropdown';
+// import { Dropdown } from 'react-native-element-dropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import { MultiSelect } from 'react-native-element-dropdown';
@@ -464,7 +464,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
   };
 
   const handleDiseaseChange = (value) => {
-    // console.log("On Change",value);
     setFormData({
       ...formData,
       disease: value.id,
