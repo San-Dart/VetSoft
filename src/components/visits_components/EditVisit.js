@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Button, TextInput, Image } from "react-native";
-import { Switch, Dialog, Portal, Paragraph } from "react-native-paper";
-import axios from "react-native-axios";
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Button, TextInput, Image } from 'react-native';
+import { Switch, Dialog, Portal, Paragraph } from 'react-native-paper';
+import axios from 'react-native-axios';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DatePicker from 'react-native-datepicker';
-import { Dropdown } from "react-native-element-dropdown";
+import { Dropdown } from 'react-native-element-dropdown';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
-import { useIsFocused } from "@react-navigation/core";
+import { useIsFocused } from '@react-navigation/core';
 
 const EditVisit = ({ route, navigation }) => {
-
   const visitDetailData = route.params.visitsInfo;
   // console.log("visitDetailData", route.params.attachments);
 
   const visitDetailId = route.params.visitsInfo.id;
 
-  const weight = visitDetailData.weight.split("kg");
+  const weight = visitDetailData.weight.split('kg');
 
   let splitText2 = route.params.visitsInfo.pet_id.pet_name;
   splitText2 = splitText2.charAt(0).toUpperCase() + splitText2.slice(1);
@@ -26,25 +25,25 @@ const EditVisit = ({ route, navigation }) => {
   navigation.setOptions({ title: `${splitText1} / ${splitText2}` });
 
   const [formData, setFormData] = useState({
-    pet_id: "",
-    owner_name_id: "",
-    visited_date: "",
-    visit_purpose: "",
-    visited_clinic_id: "",
-    doctor_name: "",
+    pet_id: '',
+    owner_name_id: '',
+    visited_date: '',
+    visit_purpose: '',
+    visited_clinic_id: '',
+    doctor_name: '',
     symptoms_data: [],
     injections_data: [],
-    client_access_disease: "",
-    client_access_injection_data: "",
-    client_access_symptom: "",
-    disease: "",
-    weight: "",
-    branch_id: "",
-    diagnosis_note: "",
-    doctor_note: "",
-    prescription_id: "",
-    visit_type: "",
-    is_submited: "",
+    client_access_disease: '',
+    client_access_injection_data: '',
+    client_access_symptom: '',
+    disease: '',
+    weight: '',
+    branch_id: '',
+    diagnosis_note: '',
+    doctor_note: '',
+    prescription_id: '',
+    visit_type: '',
+    is_submited: '',
     // vaccine_data: "",
   });
 
@@ -53,19 +52,18 @@ const EditVisit = ({ route, navigation }) => {
   const [date, setDate] = useState();
 
   const currentDate = () => {
-
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     // console.log(year + '-' + month + '-' + date);
     setDate(year + '-' + month + '-' + date);
-  }
+  };
 
   useEffect(() => {
     currentDate();
-  }, [])
+  }, []);
 
-  const [breedData, setBreedData] = useState("");
+  const [breedData, setBreedData] = useState('');
 
   const [visitData, setVisitData] = useState([]);
   const [visitPurposeData, setVisitPurposeData] = useState([]);
@@ -94,9 +92,9 @@ const EditVisit = ({ route, navigation }) => {
 
   // const [savedSuccessMsg, setSavedSuccessMsg] = useState(false);
   // const [savedErrorMsg, setSavedErrorMsg] = useState(false);
-  const path = "http://192.168.1.58:8000";
+  const path = 'http://192.168.1.58:8000';
 
-  const [weightUnit, setWeightUnit] = useState("kg");
+  const [weightUnit, setWeightUnit] = useState('kg');
   const units = [
     { label: 'Kilogram', value: 'kg' },
     { label: 'Gram(g)', value: 'g' },
@@ -128,11 +126,10 @@ const EditVisit = ({ route, navigation }) => {
       visit_type: visitDetailData.visit_type.id,
       symptoms_data: JSON.parse(visitDetailData.symptoms_data),
       // attachments: visitDetailData.attachments
-    })
+    });
     setClientAccess(visitDetailData.client_access_symptom === '1' ? true : false);
     setClientAccessDisease(visitDetailData.client_access_disease === '1' ? true : false);
     setClientAccessInjection(visitDetailData.client_access_injection_data === '1' ? true : false);
-
   }, [visitDetailData]);
 
   // console.log("formData", formData);
@@ -149,13 +146,14 @@ const EditVisit = ({ route, navigation }) => {
       getBreedName();
       getIndividualVisitData();
     }
-  }, [isFocused])
+  }, [isFocused]);
 
-  const getIndividualVisitData = async() => {
-    await axios.get(`visitDetail/${visitDetailId}`)
+  const getIndividualVisitData = async () => {
+    await axios
+      .get(`visitDetail/${visitDetailId}`)
       .then((res) => {
         if (res.status == 200) {
-          let attachmentData = res.data
+          let attachmentData = res.data;
           attachmentData.attachments = oganizeFiles(attachmentData);
           setVisitData(attachmentData);
         }
@@ -163,290 +161,281 @@ const EditVisit = ({ route, navigation }) => {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
   // console.log("visitData", visitData);
 
   const oganizeFiles = (attachmentData) => {
     let files = [];
-    attachmentData.attachments.forEach(element => {
-        let tempUrl = path + '/storage/' + element.file_path;
-        files.push({
-            id: element.id,
-            uid: element.file_id,
-            name: element.file_name,
-            custom_name: element.custom_name,
-            client_access: element.client_access == "1" ? true : false,
-            size: element.size,
-            type: element.file_type,
-            lastModified: "",
-            status: 'done',
-            url: tempUrl,
-        });
+    attachmentData.attachments.forEach((element) => {
+      let tempUrl = path + '/storage/' + element.file_path;
+      files.push({
+        id: element.id,
+        uid: element.file_id,
+        name: element.file_name,
+        custom_name: element.custom_name,
+        client_access: element.client_access == '1' ? true : false,
+        size: element.size,
+        type: element.file_type,
+        lastModified: '',
+        status: 'done',
+        url: tempUrl,
+      });
     });
     return files;
-  }
+  };
 
   const getBreedName = () => {
-    let breedId = visitDetailData.pet_id.breed_id
+    let breedId = visitDetailData.pet_id.breed_id;
     axios
       .get(`/breed/${breedId}`)
       .then((res) => {
         // console.log("breedData",res.data);
-        setBreedData(res.data.edited_animal_name ? res.data.edited_animal_name : res.data.actual_animal_name)
+        setBreedData(res.data.edited_animal_name ? res.data.edited_animal_name : res.data.actual_animal_name);
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   const getVaccineData = () => {
     let vaccineData = vaccineData;
     vaccineData = [];
     let userClinicId = route.params.userDetails.clinic.id;
-    axios.get(`/injection/clinic/${userClinicId}`).then(
-      res => {
+    axios
+      .get(`/injection/clinic/${userClinicId}`)
+      .then((res) => {
         // console.log("vaccinedata",res.data);
         res.data.map((element, index) => {
           vaccineData.push({
             id: element.id,
             medicine_name: element.medicine_name,
             label: element.medicine_name,
-            title: `${element.vaccine_name}`
+            title: `${element.vaccine_name}`,
           });
         });
         setVaccineData(vaccineData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getVisitPurposeData = () => {
     let visitPurposeData = visitPurposeData;
     visitPurposeData = [];
     let userClinicId = route.params.userDetails.clinic.id;
-    axios.get(`/visitPurpose/clinic/${userClinicId}`).then(
-      res => {
+    axios
+      .get(`/visitPurpose/clinic/${userClinicId}`)
+      .then((res) => {
         // console.log(res.data);
         res.data.map((element, index) => {
           visitPurposeData.push({
             id: element.id,
             visit_purpose: element.edited_name ? element.edited_name : element.actual_name,
             label: element.edited_name ? element.edited_name : element.actual_name,
-            title: `${element.visit_purpose}`
+            title: `${element.visit_purpose}`,
           });
         });
         setVisitPurposeData(visitPurposeData);
         // console.log(petOwnersData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getDiseaseData = () => {
     let diseaseData = diseaseData;
     diseaseData = [];
     let userClinicId = route.params.userDetails.clinic.id;
-    axios.get(`/disease/clinic/${userClinicId}`).then(
-      res => {
+    axios
+      .get(`/disease/clinic/${userClinicId}`)
+      .then((res) => {
         // console.log("Disease", res.data);
         res.data.map((element, index) => {
           diseaseData.push({
             id: element.id,
             label: element.edited_name ? element.edited_name : element.actual_name,
-            title: `${element.disease}`
+            title: `${element.disease}`,
           });
         });
         setDiseaseData(diseaseData);
         // console.log(petOwnersData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getMedicineData = () => {
     let medicineData = medicineData;
     medicineData = [];
     let userClinicId = route.params.userDetails.clinic.id;
-    axios.get(`/medicine/clinic/${userClinicId}`).then(
-      res => {
+    axios
+      .get(`/medicine/clinic/${userClinicId}`)
+      .then((res) => {
         // console.log("Medicine Data", res.data);
         res.data.map((element, index) => {
           medicineData.push({
             id: element.id,
             label: element.medicine_name,
-            title: `${element.medicine_name}`
+            title: `${element.medicine_name}`,
           });
         });
         setMedicineData(medicineData);
         // console.log("test", prescriptionData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getPrescriptionData = () => {
     let prescriptionData = prescriptionData;
     prescriptionData = [];
     let userClinicId = route.params.userDetails.clinic.id;
-    axios.get(`/prescription-template/clinic/${userClinicId}`).then(
-      res => {
+    axios
+      .get(`/prescription-template/clinic/${userClinicId}`)
+      .then((res) => {
         // console.log("prescriptionData", res.data);
         res.data.map((element, index) => {
           prescriptionData.push({
             id: element.id,
             label: element.template_name,
-            title: `${element.template_name}`
+            title: `${element.template_name}`,
           });
         });
         setPrescriptionData(prescriptionData);
         // console.log("test", prescriptionData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getVisitTypeData = () => {
     let visitTypeData = visitTypeData;
     visitTypeData = [];
     let userClinicId = route.params.userDetails.clinic.id;
-    axios.get(`/visitType/clinic/${userClinicId}`).then(
-      res => {
+    axios
+      .get(`/visitType/clinic/${userClinicId}`)
+      .then((res) => {
         // console.log("visitssssssssss", res.data);
         res.data.map((element, index) => {
           visitTypeData.push({
             id: element.id,
             label: element.edited_name ? element.edited_name : element.actual_name,
-            title: `${element.visit_type}`
+            title: `${element.visit_type}`,
           });
           // console.log("teteteteteteetetete", res.data);
         });
         setVisitTypeData(visitTypeData);
         // console.log("test", visitTypeData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getBranchData = () => {
     let branchData = branchData;
     branchData = [];
-    axios.get(`/clinic/branch/${route.params.userDetails.clinic.id}`).then(
-      res => {
+    axios
+      .get(`/clinic/branch/${route.params.userDetails.clinic.id}`)
+      .then((res) => {
         // console.log(res.data);
         res.data.map((element, index) => {
           branchData.push({
             id: element.id,
             branch: element.branch,
-            title: `${element.branch}`
+            title: `${element.branch}`,
           });
         });
         setBranchData(branchData);
         // console.log(petOwnersData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const getSymptomsData = () => {
     let symptomsData = symptomsData;
     symptomsData = [];
-    axios.get(`/symptom`).then(
-      res => {
+    axios
+      .get(`/symptom`)
+      .then((res) => {
         // console.log("symptom", res.data);
         res.data.map((element, index) => {
           symptomsData.push({
             id: element.id,
             label: element.symptom_name,
-            title: `${element.symptom_name}`
+            title: `${element.symptom_name}`,
           });
         });
         setSymptomsData(symptomsData);
         // console.log(petOwnersData);
-      }
-    ).catch(
-      err => {
-        console.log(err)
-      }
-    )
-  }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   // handling changes in form
   // visit purpose
   const handleVisitPurposeChange = (value) => {
     console.log(value['label']);
-    if (value.visit_purpose == "Vaccination") {
+    if (value.visit_purpose == 'Vaccination') {
       setVaccinationData(true);
     } else {
       setVaccinationData(false);
     }
     setFormData({
       ...formData,
-      visit_purpose: value.id
+      visit_purpose: value.id,
     });
-
-  }
+  };
   const handleAddNewVisitPurpose = () => {
     navigation.navigate('AddVisitPurpose');
-  }
+  };
 
   // weight
   const handlePetWeightChange = (value) => {
     setFormData({
       ...formData,
-      weight: value
+      weight: value,
     });
-  }
+  };
   const handleWeightChange = (value) => {
     setWeightUnit(value.value);
-  }
+  };
 
   // vaccine change
   const handleAddNewVaccineChange = () => {
     navigation.navigate('AddVaccine');
-  }
+  };
   const handleVaccineChange = (value) => {
     setFormData({
       ...formData,
-      vaccine: value.vaccine_name
+      vaccine: value.vaccine_name,
     });
-  }
+  };
 
   // diagnosis note
   const handleDiagnosisNoteChange = (value) => {
     setFormData({
       ...formData,
-      diagnosis_note: value
+      diagnosis_note: value,
     });
-  }
+  };
 
   // doctor note
   const handleDoctorsNoteChange = (value) => {
     setFormData({
       ...formData,
-      doctor_note: value
+      doctor_note: value,
     });
-  }
+  };
 
   // symptoms data
   const onToggleSwitch1 = (value) => {
@@ -454,15 +443,15 @@ const EditVisit = ({ route, navigation }) => {
     setIsSwitchOnSymptoms(value);
     setFormData({
       ...formData,
-      client_access_symptom: value
-    })
+      client_access_symptom: value,
+    });
   };
 
   const handleSymptomsChange = (item) => {
     // console.log("Symptom", item);
     setFormData({
       ...formData,
-      symptoms_data: item
+      symptoms_data: item,
     });
   };
 
@@ -473,19 +462,19 @@ const EditVisit = ({ route, navigation }) => {
     setIsSwitchOnDisease(value);
     setFormData({
       ...formData,
-      client_access_disease: value
-    })
+      client_access_disease: value,
+    });
   };
   const handleAddNewDisease = () => {
     navigation.navigate('AddDisease');
-  }
+  };
   const handleDiseaseChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      disease: value.id
+      disease: value.id,
     });
-  }
+  };
 
   // injection data
   const onToggleSwitchInjectionData = (value) => {
@@ -494,56 +483,56 @@ const EditVisit = ({ route, navigation }) => {
     setIsSwitchOnInjection(value);
     setFormData({
       ...formData,
-      client_access_injection_data: value
-    })
+      client_access_injection_data: value,
+    });
   };
   const handleAddNewMedicine = () => {
     navigation.navigate('AddMedicine');
-  }
+  };
   const handleMedicineChange = (value) => {
     setFormData({
       ...formData,
-      injection_data: value.id
+      injection_data: value.id,
     });
-  }
+  };
 
   // prescription
   const handleAddNewPrescription = () => {
     navigation.navigate('AddPrescriptionTemplate', { getPrescriptionTemplateData: getPrescriptionTemplateData });
-  }
+  };
   const handlePrescriptionChange = (value) => {
     getPrescriptionData();
     setFormData({
       ...formData,
-      prescription_id: value.id
+      prescription_id: value.id,
     });
-  }
+  };
 
   // files
   const updateFileQueue = (data) => {
-    console.log("In Edit Visit Screen", data);
+    console.log('In Edit Visit Screen', data);
     setFiles(data);
-  }
+  };
 
   // visit type
   const handleAddNewVisitType = () => {
     navigation.navigate('AddVisitType');
-  }
+  };
   const handleVisitTypeChange = (value) => {
     // console.log(value);
     setFormData({
       ...formData,
-      visit_type: value.id
+      visit_type: value.id,
     });
-  }
+  };
 
   // branch
   const handleBranchChange = (value) => {
     setFormData({
       ...formData,
-      branch_id: value.id
+      branch_id: value.id,
     });
-  }
+  };
 
   // portal
 
@@ -552,15 +541,16 @@ const EditVisit = ({ route, navigation }) => {
     let data = formData;
     data.id = visitDetailData.id;
     data.is_submited = true;
-    data.weight = formData.weight + " " + weightUnit;
+    data.weight = formData.weight + ' ' + weightUnit;
     data.symptoms_data = formData.symptoms_data && formData.symptoms_data.toString();
     data.injections_data = formData.symptoms_data && formData.injections_data.toString();
 
-    console.log("gfh", data);
-    axios.post(`/visitDetail/update`, data)
+    console.log('gfh', data);
+    axios
+      .post(`/visitDetail/update`, data)
       .then((res) => {
-        if (res.status == "200") {
-          console.log("Successfully updated");
+        if (res.status == '200') {
+          console.log('Successfully updated');
           submitRoute(res.data.visit_id);
           // console.log("zzzzzzzz", res.data);
           navigation.navigate('SubmitNewVisitForm', { visitId: visitDetailData.id });
@@ -570,7 +560,7 @@ const EditVisit = ({ route, navigation }) => {
         console.log(err);
         // setErrorMsg(true);
       });
-  }
+  };
 
   const onSave = () => {
     // let visitId = visitDetailData.id
@@ -580,16 +570,16 @@ const EditVisit = ({ route, navigation }) => {
     data.injections_data = formData.injections_data && formData.injections_data.toString();
     // console.log("gfh", formData.symptoms_data);
     data.is_submited = false;
-    data.weight = formData.weight + " " + weightUnit;
+    data.weight = formData.weight + ' ' + weightUnit;
 
-    console.log("gfh", data);
+    console.log('gfh', data);
 
-    axios.post(`/visitDetail/update`, data)
+    axios
+      .post(`/visitDetail/update`, data)
       .then((res) => {
         console.log(res.data);
-        if (res.status == "200") {
-          ;
-          console.log("res.data", res.data);
+        if (res.status == '200') {
+          console.log('res.data', res.data);
           submitMethod(res.data.visit_id);
           navigation.goBack();
         }
@@ -598,89 +588,90 @@ const EditVisit = ({ route, navigation }) => {
         console.log(err);
         // setSavedErrorMsg(true);
       });
-  }
+  };
 
-  const submitRoute = async(value) => {
+  const submitRoute = async (value) => {
     // submitMethod(value);
     let fileData = new FormData();
-    fileData.append("visit_id", value);
-    fileData.append("clinic_id", formData.visited_clinic_id);
+    fileData.append('visit_id', value);
+    fileData.append('clinic_id', formData.visited_clinic_id);
     for (var i = 0; i < files.length; i++) {
-        fileData.append("files[]", files[i])
+      fileData.append('files[]', files[i]);
     }
     // console.log("fileData", fileData);
-    await axios.post(`/visitDetail/uploadFilesMobile`, fileData,{
+    await axios
+      .post(`/visitDetail/uploadFilesMobile`, fileData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
-    })
-    .then((res) => {
-        console.log("error", res);
-    })
-    navigation.navigate('SubmitNewVisitForm', {visitId: value});
-  }
+      })
+      .then((res) => {
+        console.log('error', res);
+      });
+    navigation.navigate('SubmitNewVisitForm', { visitId: value });
+  };
 
-  const submitMethod = async(value) => {
+  const submitMethod = async (value) => {
     let fileData = new FormData();
-    fileData.append("visit_id", value);
-    fileData.append("clinic_id", formData.visited_clinic_id);
+    fileData.append('visit_id', value);
+    fileData.append('clinic_id', formData.visited_clinic_id);
     for (var i = 0; i < files.length; i++) {
-        fileData.append("files[]", files[i])
+      fileData.append('files[]', files[i]);
     }
-    console.log("fileData", fileData);
-    await axios.post(`/visitDetail/uploadFilesMobile`, fileData,{
+    console.log('fileData', fileData);
+    await axios
+      .post(`/visitDetail/uploadFilesMobile`, fileData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
-    })
-    .then((res) => {
-        console.log("error", res);
-    })
-  }
+      })
+      .then((res) => {
+        console.log('error', res);
+      });
+  };
 
   return (
     <ScrollView>
       <View style={styles.container} key={'edit_v'}>
         <View style={styles.topVisitDetail} key={'edit_v_1'}>
           <View style={styles.topLeft} key={'edit_v_1_0'}>
-            <Text style={{ color: '#000', fontWeight: 'bold' }}>{visitDetailData && visitDetailData.pet_id.pet_name} / {breedData && breedData}</Text>
-            <Text style={{ color: '#000', fontWeight: 'bold' }}>Last Visited -<Text style={{ fontWeight: 'normal' }}>{route.params.visitsInfo.visited_date}</Text></Text>
+            <Text style={{ color: '#000', fontWeight: 'bold' }}>
+              {visitDetailData && visitDetailData.pet_id.pet_name} / {breedData && breedData}
+            </Text>
+            <Text style={{ color: '#000', fontWeight: 'bold' }}>
+              Last Visited -<Text style={{ fontWeight: 'normal' }}>{route.params.visitsInfo.visited_date}</Text>
+            </Text>
           </View>
 
           <View style={styles.datePicker} key={'edit_v_1_1'}>
-            <MaterialCommunityIcons
-              name="calendar-edit"
-              color={'#006766'}
-              size={35}
-            />
+            <MaterialCommunityIcons name='calendar-edit' color={'#006766'} size={35} />
             <DatePicker
               style={styles.datePickerStyle}
               date={date} // Initial date from state
-              mode="date" // The enum of date, datetime and time
-              placeholder="select date"
+              mode='date' // The enum of date, datetime and time
+              placeholder='select date'
               minDate={new Date()}
               placeholderStyle={{ color: '#000' }}
-              format="YYYY-MM-DD"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
+              format='YYYY-MM-DD'
+              confirmBtnText='Confirm'
+              cancelBtnText='Cancel'
               customStyles={{
                 dateIcon: {
-                  display: 'none'
+                  display: 'none',
                 },
               }}
               onDateChange={(value) => {
                 setFormData({
                   ...formData,
-                  visited_date: value
+                  visited_date: value,
                 });
               }}
               dropDownContainerStyle={{
                 borderWidth: 1,
                 borderColor: '#eeee',
-
               }}
               searchContainerStyle={{
-                borderBottomColor: "#eeee"
+                borderBottomColor: '#eeee',
               }}
             />
           </View>
@@ -688,7 +679,6 @@ const EditVisit = ({ route, navigation }) => {
 
         {/*  */}
         <View style={styles.editVisitForm} key={'edit_v_2'}>
-
           {/* Visit Purpose */}
           <View style={styles.formItem}>
             <Text style={styles.formLabel}>Visit Purpose:</Text>
@@ -697,9 +687,9 @@ const EditVisit = ({ route, navigation }) => {
             <CustomDropdown
               handleAddEvent={handleAddNewVisitPurpose}
               onChange={handleVisitPurposeChange}
-              buttonLabel={"Add new visit purpose"}
+              buttonLabel={'Add new visit purpose'}
               isButton={true}
-              dropdownType={"single"}
+              dropdownType={'single'}
               autoFocusSearch={false}
               enableSearch={false}
               defaultValue={formData && formData.visit_purpose}
@@ -716,8 +706,8 @@ const EditVisit = ({ route, navigation }) => {
                 style={styles.formTextInput}
                 defaultValue={weight && weight[0]}
                 keyboardType='number-pad'
-                onChangeText={(value) => handlePetWeightChange(value)}>
-              </TextInput>
+                onChangeText={(value) => handlePetWeightChange(value)}
+              ></TextInput>
               <Dropdown
                 style={styles.dropdownWeight}
                 placeholder='Select...'
@@ -729,19 +719,21 @@ const EditVisit = ({ route, navigation }) => {
                 // item={weightUnit}
                 searchPlaceholder='search...'
                 selectedTextStyle={{
-                  color: '#00000080'
+                  color: '#00000080',
                 }}
                 placeholderStyle={{
                   color: '#bebebe',
-                  fontSize: 16
+                  fontSize: 16,
                 }}
-                onChange={(value) => { value && handleWeightChange(value) }}
+                onChange={(value) => {
+                  value && handleWeightChange(value);
+                }}
               />
             </View>
           </View>
 
           {/* Vaccination Change */}
-          {vaccinationData ?
+          {vaccinationData ? (
             <View style={styles.formItemVaccine} key={'edit_v_4'}>
               <Text style={styles.formLabel}>Vaccine:</Text>
 
@@ -749,21 +741,22 @@ const EditVisit = ({ route, navigation }) => {
               <CustomDropdown
                 handleAddEvent={handleAddNewVaccineChange}
                 onChange={handleVaccineChange}
-                buttonLabel={"Add new vaccine"}
+                buttonLabel={'Add new vaccine'}
                 // defaultValue={5}
                 data={vaccineData}
               />
             </View>
-            : <></>
-          }
+          ) : (
+            <></>
+          )}
 
           {/* Diagnosis Note */}
           <View style={styles.formItem} key={'edit_v_5'}>
             <Text style={styles.formLabel}>Diagnosis Note:</Text>
             <TextInput
               style={styles.textArea}
-              placeholder="Diagnosis Notes here ..."
-              placeholderTextColor="grey"
+              placeholder='Diagnosis Notes here ...'
+              placeholderTextColor='grey'
               numberOfLines={10}
               multiline={true}
               defaultValue={formData && formData.diagnosis_note}
@@ -777,7 +770,7 @@ const EditVisit = ({ route, navigation }) => {
             <TextInput
               style={styles.textArea}
               placeholder="Doctor's Notes here ..."
-              placeholderTextColor="grey"
+              placeholderTextColor='grey'
               numberOfLines={10}
               multiline={true}
               defaultValue={formData && formData.doctor_note}
@@ -788,80 +781,98 @@ const EditVisit = ({ route, navigation }) => {
           {/* Symptoms */}
           <View style={styles.formItem} key={'edit_v_7'}>
             <Text style={styles.formLabel}>Symptoms:</Text>
-            <View style={{
-              alignItems: 'flex-end',
-              marginBottom: 15,
-            }}>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                backgroundColor: '#BFD9D970',
-                width: 180,
-                alignItems: 'center',
-                borderRadius: 30,
-                height: 30,
-                paddingHorizontal: 4,
-              }}>
-                {clientAccess ?
+            <View
+              style={{
+                alignItems: 'flex-end',
+                marginBottom: 15,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  backgroundColor: '#BFD9D970',
+                  width: 180,
+                  alignItems: 'center',
+                  borderRadius: 30,
+                  height: 30,
+                  paddingHorizontal: 4,
+                }}
+              >
+                {clientAccess ? (
                   <>
-                    <Text style={{ color: '#006766', fontWeight: 'bold' }}>Client Access <Text style={{ color: '#006766', fontWeight: 'bold' }}>ON</Text></Text>
+                    <Text style={{ color: '#006766', fontWeight: 'bold' }}>
+                      Client Access <Text style={{ color: '#006766', fontWeight: 'bold' }}>ON</Text>
+                    </Text>
                   </>
-                  : <>
-                    <Text style={{ color: '#00000080', fontWeight: 'bold' }}>Client Access <Text style={{ color: '#000', fontWeight: 'bold' }}>OFF</Text></Text>
+                ) : (
+                  <>
+                    <Text style={{ color: '#00000080', fontWeight: 'bold' }}>
+                      Client Access <Text style={{ color: '#000', fontWeight: 'bold' }}>OFF</Text>
+                    </Text>
                   </>
-                }
+                )}
                 <Switch
                   value={formData && formData.client_access_symptom}
                   onValueChange={(value) => onToggleSwitch1(value)}
                   // style={{marginTop:-12}}
-                  trackColor={{ false: "#00000080", true: "#0E9C9B70" }}
+                  trackColor={{ false: '#00000080', true: '#0E9C9B70' }}
                   thumbColor={'#0E9C9B'}
-                // defaultValue={formData && formData.client_access_symptom}
+                  // defaultValue={formData && formData.client_access_symptom}
                 />
               </View>
             </View>
             <CustomDropdown
               // handleAddEvent={handleSymptomsChange}
               onChange={handleSymptomsChange}
-              buttonLabel={"Add new symptoms"}
+              buttonLabel={'Add new symptoms'}
               defaultValue={formData && formData.symptoms_data}
               enableSearch={false}
-              dropdownType={"multiple"}
+              dropdownType={'multiple'}
               data={symptomsData}
             />
-            
           </View>
 
           {/* Disease */}
           <View style={styles.formItem} key={'edit_v_8'}>
             <Text style={styles.formLabel}>Confirmatory Diagnosis:</Text>
 
-            <View style={{
-              alignItems: 'flex-end',
-              marginBottom: 15,
-            }}>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                backgroundColor: '#BFD9D970',
-                width: 180,
-                alignItems: 'center',
-                borderRadius: 30,
-                height: 30,
-                paddingHorizontal: 4,
-              }}>
-                {clientAccessDisease ?
+            <View
+              style={{
+                alignItems: 'flex-end',
+                marginBottom: 15,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  backgroundColor: '#BFD9D970',
+                  width: 180,
+                  alignItems: 'center',
+                  borderRadius: 30,
+                  height: 30,
+                  paddingHorizontal: 4,
+                }}
+              >
+                {clientAccessDisease ? (
                   <>
-                    <Text style={{ color: '#006766', fontWeight: 'bold' }}>Client Access <Text style={{ color: '#006766', fontWeight: 'bold' }}>ON</Text></Text>
+                    <Text style={{ color: '#006766', fontWeight: 'bold' }}>
+                      Client Access <Text style={{ color: '#006766', fontWeight: 'bold' }}>ON</Text>
+                    </Text>
                   </>
-                  : <>
-                    <Text style={{ color: '#00000080', fontWeight: 'bold' }}>Client Access <Text style={{ color: '#000', fontWeight: 'bold' }}>OFF</Text></Text>
-                  </>}
+                ) : (
+                  <>
+                    <Text style={{ color: '#00000080', fontWeight: 'bold' }}>
+                      Client Access <Text style={{ color: '#000', fontWeight: 'bold' }}>OFF</Text>
+                    </Text>
+                  </>
+                )}
                 <Switch
                   value={formData && formData.client_access_disease}
                   onValueChange={(value) => onToggleSwitchDisease(value)}
                   // style={{marginTop:-12}}
-                  trackColor={{ false: "#00000080", true: "#0E9C9B70" }}
+                  trackColor={{ false: '#00000080', true: '#0E9C9B70' }}
                   thumbColor={'#0E9C9B'}
                 />
               </View>
@@ -871,43 +882,52 @@ const EditVisit = ({ route, navigation }) => {
             <CustomDropdown
               handleAddEvent={handleAddNewDisease}
               onChange={handleDiseaseChange}
-              buttonLabel={"Add new disease"}
+              buttonLabel={'Add new disease'}
               // defaultValue={5}
               data={diseaseData}
             />
-
           </View>
 
           {/* Medications */}
           <View style={styles.formItem} key={'edit_v_9'}>
             <Text style={styles.formLabel}>Medications:</Text>
 
-            <View style={{
-              alignItems: 'flex-end',
-              marginBottom: 15,
-            }}>
-              <View style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                backgroundColor: '#BFD9D970',
-                width: 180,
-                alignItems: 'center',
-                borderRadius: 30,
-                height: 30,
-                paddingHorizontal: 4,
-              }}>
-                {clientAccessInjection ?
+            <View
+              style={{
+                alignItems: 'flex-end',
+                marginBottom: 15,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  backgroundColor: '#BFD9D970',
+                  width: 180,
+                  alignItems: 'center',
+                  borderRadius: 30,
+                  height: 30,
+                  paddingHorizontal: 4,
+                }}
+              >
+                {clientAccessInjection ? (
                   <>
-                    <Text style={{ color: '#006766', fontWeight: 'bold' }}>Client Access <Text style={{ color: '#006766', fontWeight: 'bold' }}>ON</Text></Text>
+                    <Text style={{ color: '#006766', fontWeight: 'bold' }}>
+                      Client Access <Text style={{ color: '#006766', fontWeight: 'bold' }}>ON</Text>
+                    </Text>
                   </>
-                  : <>
-                    <Text style={{ color: '#00000080', fontWeight: 'bold' }}>Client Access <Text style={{ color: '#000', fontWeight: 'bold' }}>OFF</Text></Text>
-                  </>}
+                ) : (
+                  <>
+                    <Text style={{ color: '#00000080', fontWeight: 'bold' }}>
+                      Client Access <Text style={{ color: '#000', fontWeight: 'bold' }}>OFF</Text>
+                    </Text>
+                  </>
+                )}
                 <Switch
                   value={formData && formData.client_access_injection_data}
                   onValueChange={(value) => onToggleSwitchInjectionData(value)}
                   // style={{marginTop:-12}}
-                  trackColor={{ false: "#00000080", true: "#0E9C9B70" }}
+                  trackColor={{ false: '#00000080', true: '#0E9C9B70' }}
                   thumbColor={'#0E9C9B'}
                 />
               </View>
@@ -917,7 +937,7 @@ const EditVisit = ({ route, navigation }) => {
             <CustomDropdown
               handleAddEvent={handleAddNewMedicine}
               onChange={handleMedicineChange}
-              buttonLabel={"Add new Injection"}
+              buttonLabel={'Add new Injection'}
               // defaultValue={5}
               data={medicineData}
             />
@@ -929,7 +949,7 @@ const EditVisit = ({ route, navigation }) => {
             <CustomDropdown
               handleAddEvent={handleAddNewPrescription}
               onChange={handlePrescriptionChange}
-              buttonLabel={"Add new prescription"}
+              buttonLabel={'Add new prescription'}
               // defaultValue={5}
               data={prescriptionData}
               defaultValue={formData && formData.prescription_id}
@@ -939,10 +959,28 @@ const EditVisit = ({ route, navigation }) => {
           {/* Documents */}
           <View style={styles.formItem} key={'edit_v_11'}>
             <Text style={styles.formLabel}>Documents:</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('DocumentUpload', { updateFileQueue: updateFileQueue, files: files, existingFiles: visitData.attachments })}>
-              <Text style={{ textAlign: 'center', padding: 14, backgroundColor: '#006766', color: '#fff', borderRadius: 12, }}>Upload a file/image</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('DocumentUpload', {
+                  updateFileQueue: updateFileQueue,
+                  files: files,
+                  existingFiles: visitData.attachments,
+                })
+              }
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  padding: 14,
+                  backgroundColor: '#006766',
+                  color: '#fff',
+                  borderRadius: 12,
+                }}
+              >
+                Upload a file/image
+              </Text>
             </TouchableOpacity>
-            
+
             {/* <UploadView visitData={visitData && visitData}/> */}
           </View>
 
@@ -953,7 +991,7 @@ const EditVisit = ({ route, navigation }) => {
             <CustomDropdown
               handleAddEvent={handleAddNewVisitType}
               onChange={handleVisitTypeChange}
-              buttonLabel={"Add new visit type"}
+              buttonLabel={'Add new visit type'}
               // defaultValue={5}
               defaultValue={formData && formData.visit_type}
               data={visitTypeData}
@@ -977,60 +1015,62 @@ const EditVisit = ({ route, navigation }) => {
               labelField='branch'
               valueField='id'
               value={formData && formData.branch_id}
-              onChange={(value) => { value && handleBranchChange(value) }}
+              onChange={(value) => {
+                value && handleBranchChange(value);
+              }}
               search={true}
               searchPlaceholder='search...'
               selectedTextStyle={{
-                color: '#00000080'
+                color: '#00000080',
               }}
               placeholderStyle={{
                 color: '#00000080',
-                fontSize: 16
+                fontSize: 16,
               }}
             />
           </View>
-
         </View>
       </View>
-      {
-        formData && formData.is_submited === true ?
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
+      {formData && formData.is_submited === true ? (
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            backgroundColor: '#7BCC70',
+            padding: 20,
+            elevation: 5,
+          }}
+        >
+          <Text
             style={{
-              backgroundColor: '#7BCC70',
-              padding: 20,
-              elevation: 5
-            }}
-          >
-            <Text style={{
               color: '#000',
               textAlign: 'center',
               fontWeight: 'bold',
-            }}>Record submitted already, Click to go back !</Text>
-          </TouchableOpacity>
-          : <View style={styles.formButtons}>
-            <TouchableOpacity
-              onPress={() => onHandleSubmit()}
-              style={{ width: '50%' }}
-            >
-              <Text style={{
+            }}
+          >
+            Record submitted already, Click to go back !
+          </Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.formButtons}>
+          <TouchableOpacity onPress={() => onHandleSubmit()} style={{ width: '50%' }}>
+            <Text
+              style={{
                 backgroundColor: '#006766',
                 alignItems: 'center',
                 color: '#fff',
                 textAlign: 'center',
                 paddingVertical: 20,
-                fontWeight: 'bold'
-              }}>
-                Submit
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ width: '60%' }}
-              onPress={onSave}
+                fontWeight: 'bold',
+              }}
             >
-              <Text style={styles.submit}>Save</Text>
-            </TouchableOpacity>
-          </View>}
+              Submit
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ width: '60%' }} onPress={onSave}>
+            <Text style={styles.submit}>Save</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       {/* ))} */}
       {/* <View>
             <>
@@ -1099,14 +1139,13 @@ const EditVisit = ({ route, navigation }) => {
 export default EditVisit;
 
 const styles = StyleSheet.create({
-
   topVisitDetail: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#0E9C9B20',
     padding: 10,
-    height: 120
+    height: 120,
   },
   topLeft: {
     flexDirection: 'column',
@@ -1116,23 +1155,23 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   datePickerStyle: {
-    width: 120
+    width: 120,
   },
   formTextInput: {
     width: '30%',
     backgroundColor: '#fff',
     elevation: 2,
     textAlign: 'center',
-    borderRadius: 10
+    borderRadius: 10,
   },
   dropdownWeight: {
     width: '65%',
     padding: 5,
     backgroundColor: '#0E9C9B20',
-    borderRadius: 5
+    borderRadius: 5,
   },
   weightComp: {
     flexDirection: 'row',
@@ -1157,7 +1196,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editVisitForm: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   textArea: {
     backgroundColor: '#fff',
@@ -1235,5 +1274,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 20,
   },
-
 });

@@ -15,26 +15,27 @@ import { color } from 'react-native-elements/dist/helpers';
 
 const AddNewVisitDetails = ({ route, navigation }) => {
   const [formData, setFormData] = useState({
-    visit_purpose: '',
-    diagnosis_note: '',
-    doctor_note: '',
-    client_access_disease: false,
-    disease: '',
-    client_access_symptom: false,
-    symptoms_data: [],
-    weight: '',
-    prescription_id: '',
-    visit_type: '',
-    branch_id: '',
-    // vaccine: "",
-    visited_date: '',
-    client_access_injection_data: false,
-    injections_data: [],
-    is_submited: false,
-    isPrescriptionEdited: false,
     pet_id: '',
     owner_name_id: '',
+    visited_date: '',
+    visit_purpose: '',
     visited_clinic_id: '',
+    doctor_name: '',
+    symptoms_data: [],
+    injections_data: [],
+    disease: '',
+    weight: '',
+    branch_id: '',
+    diagnosis_note: '',
+    doctor_note: '',
+    prescription_id: '',
+    visit_type: '',
+    client_access_disease: false,
+    client_access_symptom: false,
+    vaccine: '',
+    client_access_injection_data: false,
+    is_submited: false,
+    isPrescriptionEdited: false,
   });
 
   const isFocused = useIsFocused();
@@ -296,7 +297,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
         res.data.map((element, index) => {
           visitPurposeData.push({
             id: element.id,
-            // visit_purpose: element.visit_purpose,
             visit_purpose: element.edited_name ? element.edited_name : element.actual_name,
             label: element.edited_name ? element.edited_name : element.actual_name,
             title: `${element.visit_purpose}`,
@@ -456,10 +456,9 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     } else {
       setVaccinationData(false);
     }
-    console.log('Valueeeeeee', value);
     setFormData({
       ...formData,
-      visit_purpose: value.visit_purpose,
+      visit_purpose: value.id,
     });
   };
 
@@ -552,7 +551,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
   const handleVaccineChange = (value) => {
     setFormData({
       ...formData,
-      injections_data: value,
+      vaccine: value.vaccine_name,
     });
   };
 
@@ -868,7 +867,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
           <View style={styles.form}>
             <View>
               {/* Visit Purpose */}
-              <View style={styles.formItem}>
+              <View style={styles.formItem} key={'edit_v_2'}>
                 <Text style={styles.formLabel}>Visit Purpose</Text>
 
                 {/* Custom Dropdown */}
@@ -876,9 +875,13 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                   handleAddEvent={handleAddNewVisitPurpose}
                   onChange={handleVisitPurposeChange}
                   buttonLabel={'Add new visit purpose'}
-                  dropdownLabel={'General Checkup'}
+                  isButton={true}
+                  dropdownType={'single'}
+                  autoFocusSearch={false}
+                  enableSearch={false}
+                  defaultValue={formData && formData.visit_purpose}
                   data={visitPurposeData}
-                  // defaultValue={formData.visit_purpose}
+                  dropdownLabel={'General Checkup'}
                 />
               </View>
 
@@ -997,19 +1000,20 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                   />
                 </View> */}
 
-              {/* {vaccinationData ?
-                            <View style={styles.formItemVaccine}>
-                                <Text style={styles.formLabel}>Medications:</Text>
+              {vaccinationData ? (
+                <View style={styles.formItemVaccine}>
+                  <Text style={styles.formLabel}>Medications:</Text>
 
-                                <CustomDropdown
-                                    handleAddEvent={handleAddNewVaccineChange}
-                                    onChange={(value) => handleVaccineChange(value)}
-                                    buttonLabel={"Add new vaccine"}
-                                    data={vaccineData}
-                                />
-                            </View>
-                            :<></>
-                        } */}
+                  <CustomDropdown
+                    handleAddEvent={handleAddNewVaccineChange}
+                    onChange={(value) => handleVaccineChange(value)}
+                    buttonLabel={'Add new vaccine'}
+                    data={vaccineData}
+                  />
+                </View>
+              ) : (
+                <></>
+              )}
 
               {/* Diagnosis Note */}
               <View style={styles.formItem}>
