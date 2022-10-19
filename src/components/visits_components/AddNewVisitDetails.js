@@ -82,17 +82,12 @@ const AddNewVisitDetails = ({ route, navigation }) => {
 
   // const [branchData, setBranchData] = useState([]);
   const [selectedBranchItem, setSelectedBranchItem] = useState(null);
-
   const [savedSuccessMsg, setSavedSuccessMsg] = useState(false);
 
   // date picker
-
   const [date, setDate] = useState(new Date());
-
   const [mode, setMode] = useState('date');
-
   const [show, setShow] = useState(false);
-
   const [text, setText] = useState('');
 
   const onChangeDob = (event, selectedDate) => {
@@ -117,8 +112,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     setShow(true);
     setMode(currentMode);
   };
-
-  // const [ fileData ]
 
   useEffect(() => {
     if (isFocused) {
