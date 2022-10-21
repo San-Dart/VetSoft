@@ -706,7 +706,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     setFiles(value);
   };
 
-  console.log(individualPetData);
+  // console.log(individualPetData);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -716,7 +716,11 @@ const AddNewVisitDetails = ({ route, navigation }) => {
           backgroundColor: '#f2f4fc',
         }}
         placement='right'
-        leftComponent={<MaterialIcons name='logo' color={'#000'} size={25} />}
+        leftComponent={
+          <View style={{ backgroundColor: '#006766', borderRadius: 25, padding: 5 }}>
+            <MaterialCommunityIcons name='paw' color={'#fff'} size={20} />
+          </View>
+        }
         centerComponent={
           <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}>
             <MaterialIcons name='home' color={'#000'} size={25} />
