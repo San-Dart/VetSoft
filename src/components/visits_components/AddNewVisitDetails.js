@@ -705,7 +705,6 @@ const AddNewVisitDetails = ({ route, navigation }) => {
     console.log('In Visit Screen', value);
     setFiles(value);
   };
-
   // console.log(individualPetData);
 
   return (
@@ -750,7 +749,7 @@ const AddNewVisitDetails = ({ route, navigation }) => {
                 borderWidth: 1,
                 borderRadius: 10,
                 borderColor: '#d4d2d2',
-                height: 40,
+                paddingVertical: 10,
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
               }}
