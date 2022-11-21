@@ -229,7 +229,7 @@ export default function App() {
         }
       })
       .catch((err) => {
-        console.log('Error');
+        // console.log('Error');
       });
   };
 
