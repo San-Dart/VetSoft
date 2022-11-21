@@ -1,24 +1,13 @@
-import React, { useState ,useEffect, useRef} from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Switch,
-  Linking,
-  Button,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import { CheckBox } from "react-native-elements";
-import { Dialog, Portal, Paragraph, Divider } from "react-native-paper";
-import DatePicker from "react-native-datepicker";
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Switch, Linking, Button, TouchableOpacity, TextInput } from 'react-native';
+import { CheckBox } from 'react-native-elements';
+import { Dialog, Portal, Paragraph, Divider } from 'react-native-paper';
+import DatePicker from 'react-native-datepicker';
 import axios from 'react-native-axios';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const AddUser = ({route, navigation}) => {
-
+const AddUser = ({ route, navigation }) => {
   const scrollRef = useRef();
   const [formData, setFormData] = useState({
     name: '',
@@ -31,10 +20,10 @@ const AddUser = ({route, navigation}) => {
     license_no: '',
     dob: '',
     phone_number: '',
-    clinic:'',
+    clinic: '',
     branch: '',
     status: '',
-    accessSubscription: "",
+    accessSubscription: '',
   });
 
   // const data = [
@@ -43,15 +32,15 @@ const AddUser = ({route, navigation}) => {
   //   { label: "Assistant", value: "3" },
   // ];
   const data = [
-    { label: "Doctor", value: "doctor",id:"1" },
-    { label: "Admin Doctor", value: "admin_doctor",id:"2" },
-    { label: "Assistant", value: "assistant",id:"3"},
+    { label: 'Doctor', value: 'doctor', id: '1' },
+    { label: 'Admin Doctor', value: 'admin_doctor', id: '2' },
+    { label: 'Assistant', value: 'assistant', id: '3' },
   ];
 
   const data1 = [
-    { label: "Male", value: "male",id:"1" },
-    { label: "Female", value: "female",id:"2" },
-    { label: "Others", value: "others",id:"3" },
+    { label: 'Male', value: 'male', id: '1' },
+    { label: 'Female', value: 'female', id: '2' },
+    { label: 'Others', value: 'others', id: '3' },
   ];
 
   const [successMsg, setSuccessMsg] = useState(false);
@@ -61,7 +50,7 @@ const AddUser = ({route, navigation}) => {
   const [checked, setChecked] = useState(false);
   const [address, setAddress] = useState(false);
   const [address1, setAddress1] = useState(false);
-  
+
   const [value, setValue] = useState(null);
   const [value1, setValue1] = useState(null);
   const [date, setDate] = useState();
@@ -70,15 +59,14 @@ const AddUser = ({route, navigation}) => {
   const [branchData, setBranchData] = useState([]);
   const [clinicData, setClinicData] = useState([]);
 
-  const [ requiredField, setRequiredField ] = useState(false);
+  const [requiredField, setRequiredField] = useState(false);
 
   const userData = route.params.userDetails;
-  console.log("userData",userData);
+  console.log('userData', userData);
 
   useEffect(() => {
-      getClinicData();
-      getBranchData();
-     
+    getClinicData();
+    getBranchData();
   }, []);
 
   const getClinicData = () => {
@@ -104,7 +92,7 @@ const AddUser = ({route, navigation}) => {
   };
 
   const getBranchData = () => {
-    let userClinicId = route.params.userDetails.clinic.id
+    let userClinicId = route.params.userDetails.clinic.id;
     console.log(userClinicId);
     let branchData = branchData;
     branchData = [];
@@ -131,16 +119,16 @@ const AddUser = ({route, navigation}) => {
 
   const onToggleSwitch = () => {
     setIsSwitchOn(!isSwitchOn);
-    if(!isSwitchOn === true) {
+    if (!isSwitchOn === true) {
       setFormData({
         ...formData,
-        status: '1'
-      })
-    }else{
+        status: '1',
+      });
+    } else {
       setFormData({
         ...formData,
-        status: '0'
-      })
+        status: '0',
+      });
     }
   };
 
@@ -149,30 +137,30 @@ const AddUser = ({route, navigation}) => {
   const onToggleBillingSwitch = () => {
     setIsBillingSwitchOn(!isBillingSwitchOn);
     // console.log("aaa",!isBillingSwitchOn);
-    if(!isBillingSwitchOn === true) {
+    if (!isBillingSwitchOn === true) {
       setFormData({
         ...formData,
-        accessSubscription: '1'
-      })
-    }else{
+        accessSubscription: '1',
+      });
+    } else {
       setFormData({
         ...formData,
-        accessSubscription: '0'
-      })
+        accessSubscription: '0',
+      });
     }
   };
 
   const onHandleRole = (item) => {
     setValue(item.value);
-    console.log("a",item.value);
-    if (item.id == "1") {
+    console.log('a', item.value);
+    if (item.id == '1') {
       setComp(true);
-    } else if (item.id === "2") {
+    } else if (item.id === '2') {
       setComp(true);
     } else {
       setComp(false);
     }
-    value
+    value;
     setFormData({
       ...formData,
       // role: item.label
@@ -182,68 +170,68 @@ const AddUser = ({route, navigation}) => {
 
   const handleGender = (item) => {
     setValue1(item.value);
-    console.log("gender",item.value);
+    console.log('gender', item.value);
     setFormData({
       ...formData,
-      gender: item.value
+      gender: item.value,
     });
-  }
+  };
 
   const handleUserNameChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      name: value
+      name: value,
     });
-  }
+  };
 
   const handleUserEmailChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      email: value
+      email: value,
     });
-  }
-  
+  };
+
   const handleUserAddressChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      address: value
+      address: value,
     });
-  }
+  };
 
   const handleUserSpecificationChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      specification : value
+      specification: value,
     });
-  }
+  };
 
   const handleUserQualificationChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      qualification : value
+      qualification: value,
     });
-  }
- 
+  };
+
   const handleUserLicenseNoChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      license_no : value
+      license_no: value,
     });
-  }
+  };
 
   const handleUserPhoneNumberChange = (value) => {
     // console.log("On Change",value);
     setFormData({
       ...formData,
-      phone_number: value
+      phone_number: value,
     });
-  }
+  };
 
   const handleClinic = (value) => {
     setFormData({
@@ -332,7 +320,7 @@ const AddUser = ({route, navigation}) => {
     //   .post(`/auth/register`, formData)
     //   .then((res) => {
     //     if (res.status == "200") {
-    //       // navigation.navigate('petSubmitPage')
+    //       // navigation.navigate('PetSubmitPage')
     //       console.log("User Registered Successfully");
     //       setSuccessMsg(true);
     //     }
@@ -341,155 +329,152 @@ const AddUser = ({route, navigation}) => {
     //     console.log(err);
     //     setErrorMsg(true);
     //   });
-    // }  
+    // }
     await axios
       .post(`/auth/register`, formData)
       .then((res) => {
-        if (res.status == "200") {
-          // navigation.navigate('petSubmitPage')
-          console.log("User Registered Successfully");
+        if (res.status == '200') {
+          // navigation.navigate('PetSubmitPage')
+          console.log('User Registered Successfully');
           setSuccessMsg(true);
         }
       })
-    .catch((err) => {
-      console.log(err);
-      setErrorMsg(true);
-    });
-  }
+      .catch((err) => {
+        console.log(err);
+        setErrorMsg(true);
+      });
+  };
 
   const handlegoback = () => {
     setSuccessMsg(false);
     navigation.goBack();
-  }
+  };
 
   const handleCancel = () => {
     setErrorMsg(false);
-  }
-
+  };
 
   return (
     <>
-      <ScrollView 
-        showsVerticalScrollIndicator={false}
-        ref={scrollRef}
-      >
-        <View style={{marginHorizontal: 10, marginTop: 20}}>
+      <ScrollView showsVerticalScrollIndicator={false} ref={scrollRef}>
+        <View style={{ marginHorizontal: 10, marginTop: 20 }}>
           <View>
-            {requiredField ? 
-              <View style={{flexDirection: 'row'}}>
+            {requiredField ? (
+              <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.required}>*</Text>
                 <Text style={styles.text}>Name</Text>
               </View>
-            : <>
-              <Text style={styles.text}>Name :</Text>
+            ) : (
+              <>
+                <Text style={styles.text}>Name :</Text>
               </>
-            }   
+            )}
 
             <TextInput
               style={styles.textInput}
-              placeholder="Enter Name: "
+              placeholder='Enter Name: '
               onChangeText={(value) => handleUserNameChange(value)}
             ></TextInput>
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
           <View style={styles.row}>
             <View>
-              {requiredField ? 
-
-                <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.required}>*</Text>
-                      <Text style={styles.text}>Role</Text>
+              {requiredField ? (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.required}>*</Text>
+                  <Text style={styles.text}>Role</Text>
                 </View>
-              : <>
-                <Text style={styles.text}>Role :</Text>
-              </>
-              }   
+              ) : (
+                <>
+                  <Text style={styles.text}>Role :</Text>
+                </>
+              )}
               <CustomDropdown
                 // handleAddEvent={handleAddNewVisitPurpose}
                 onChange={(value) => onHandleRole(value)}
                 // buttonLabel={"Add new visit purpose"}
                 isButton={false}
-                dropdownType={"single"}
+                dropdownType={'single'}
                 autoFocusSearch={false}
                 enableSearch={true}
-                labelField="label"
-                valueField="value"
+                labelField='label'
+                valueField='value'
                 // defaultValue={formData && formData.visit_purpose}
                 data={data}
               />
             </View>
 
             <View>
-              {requiredField ? 
-
-                <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.required}>*</Text>
-                      <Text style={styles.text}>Gender</Text>
+              {requiredField ? (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.required}>*</Text>
+                  <Text style={styles.text}>Gender</Text>
                 </View>
-              : <>
-                <Text style={styles.text}>Gender :</Text>
-              </>
-              }   
+              ) : (
+                <>
+                  <Text style={styles.text}>Gender :</Text>
+                </>
+              )}
               <CustomDropdown
                 // handleAddEvent={handleAddNewVisitPurpose}
                 onChange={(value) => handleGender(value)}
                 // buttonLabel={"Add new visit purpose"}
                 isButton={false}
-                dropdownType={"single"}
+                dropdownType={'single'}
                 autoFocusSearch={false}
                 enableSearch={true}
-                labelField="label"
-                valueField="value"
+                labelField='label'
+                valueField='value'
                 // defaultValue={formData && formData.visit_purpose}
                 data={data1}
               />
             </View>
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
           <View>
             {comp ? (
               <View style={styles.compElement}>
-                {requiredField ? 
-                      <View style={{flexDirection: 'row'}}>
-                          <Text style={styles.required}>*</Text>
-                          <Text style={styles.text}>Qualification</Text>
-                      </View>
-                  : <>
-                      <Text style={styles.text}>Qualification :</Text>
+                {requiredField ? (
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.required}>*</Text>
+                    <Text style={styles.text}>Qualification</Text>
+                  </View>
+                ) : (
+                  <>
+                    <Text style={styles.text}>Qualification :</Text>
                   </>
-                }   
+                )}
                 <TextInput
                   style={styles.textInputComp}
-                  placeholder="Ex: BVSC, MVSC"
+                  placeholder='Ex: BVSC, MVSC'
                   onChangeText={(value) => handleUserQualificationChange(value)}
                 ></TextInput>
-                <Divider style={styles.divider}/>
+                <Divider style={styles.divider} />
                 <Text style={styles.text}> Specifications:</Text>
                 <TextInput
                   style={styles.textInputComp}
                   onChangeText={(value) => handleUserSpecificationChange(value)}
-                  placeholder="Ex: General Physician, Surgeon, Orthopaedics"
+                  placeholder='Ex: General Physician, Surgeon, Orthopaedics'
                 ></TextInput>
-                <Divider style={styles.divider}/>
-                {requiredField ? 
-
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.required}>*</Text>
-                      <Text style={styles.text}>License No</Text>
-                    </View>
-                    : <>
-                      <Text style={styles.text}>License No :</Text>
-                    </>
-                }   
+                <Divider style={styles.divider} />
+                {requiredField ? (
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.required}>*</Text>
+                    <Text style={styles.text}>License No</Text>
+                  </View>
+                ) : (
+                  <>
+                    <Text style={styles.text}>License No :</Text>
+                  </>
+                )}
                 <TextInput
                   style={styles.textInputComp}
-                  placeholder="Enter your License No"
+                  placeholder='Enter your License No'
                   onChangeText={(value) => handleUserLicenseNoChange(value)}
-
                 ></TextInput>
               </View>
             ) : (
@@ -500,24 +485,24 @@ const AddUser = ({route, navigation}) => {
           {/* <Divider style={styles.divider}/> */}
 
           <View>
-             {requiredField ? 
-
-               <View style={{flexDirection: 'row'}}>
-                   <Text style={styles.required}>*</Text>
-                   <Text style={styles.text}>Email</Text>
-               </View>
-              : <>
-                   <Text style={styles.text}>Email :</Text>
+            {requiredField ? (
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.required}>*</Text>
+                <Text style={styles.text}>Email</Text>
+              </View>
+            ) : (
+              <>
+                <Text style={styles.text}>Email :</Text>
               </>
-              }   
+            )}
             <TextInput
               style={styles.textInput}
               onChangeText={(value) => handleUserEmailChange(value)}
-              placeholder="Enter a Email"
+              placeholder='Enter a Email'
             />
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
           <View>
             <Text style={styles.text}>Address: </Text>
@@ -525,60 +510,66 @@ const AddUser = ({route, navigation}) => {
               style={styles.textArea}
               multiline={true}
               numberOfLines={4}
-              placeholder="Enter Address"
+              placeholder='Enter Address'
               onChangeText={(value) => handleUserAddressChange(value)}
             />
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
-          <View style={{
-            flexDirection: 'row', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            backgroundColor: '#fff', 
-            elevation: 2, 
-            padding: 10,
-            marginVertical: 14
-          }}>
-            {requiredField ? 
-              <View style={{flexDirection: 'row'}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              elevation: 2,
+              padding: 10,
+              marginVertical: 14,
+            }}
+          >
+            {requiredField ? (
+              <View style={{ flexDirection: 'row' }}>
                 <Text style={styles.required}>*</Text>
-                <Text style={{
-                  //  marginBottom: 10,
-                    fontWeight: "bold",
-                    color: '#000'
-                }}>Date of Birth</Text>
+                <Text
+                  style={{
+                    //  marginBottom: 10,
+                    fontWeight: 'bold',
+                    color: '#000',
+                  }}
+                >
+                  Date of Birth
+                </Text>
               </View>
-              : <>
-                <Text style={{
-                  //  marginBottom: 10,
-                    fontWeight: "bold",
-                    color: '#000'
-                }}>Date of Birth :</Text>
+            ) : (
+              <>
+                <Text
+                  style={{
+                    //  marginBottom: 10,
+                    fontWeight: 'bold',
+                    color: '#000',
+                  }}
+                >
+                  Date of Birth :
+                </Text>
               </>
-            }   
+            )}
             <View style={styles.datePicker}>
-              <MaterialCommunityIcons
-                name="calendar-edit"
-                color={'#006766'}
-                size={35}
-              />
+              <MaterialCommunityIcons name='calendar-edit' color={'#006766'} size={35} />
               <DatePicker
                 style={styles.datePickerStyle}
                 date={new Date()} // Initial date from state
-                mode="date" // The enum of date, datetime and time
-                placeholder="select date"
+                mode='date' // The enum of date, datetime and time
+                placeholder='select date'
                 // defaultValue={formData && formData.last_visit}
                 placeholderStyle={{ color: '#000' }}
-                format="YYYY-MM-DD"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
+                format='YYYY-MM-DD'
+                confirmBtnText='Confirm'
+                cancelBtnText='Cancel'
                 customStyles={{
                   dateIcon: {
-                    display: 'none'
+                    display: 'none',
                   },
-
                 }}
                 onDateChange={(value) => {
                   // console.log("value", value);
@@ -587,128 +578,129 @@ const AddUser = ({route, navigation}) => {
                 dropDownContainerStyle={{
                   borderWidth: 1,
                   borderColor: '#eeee',
-
                 }}
                 searchContainerStyle={{
-                  borderBottomColor: "#eeee"
+                  borderBottomColor: '#eeee',
                 }}
               />
             </View>
           </View>
 
-          <Divider style={styles.divider}/>
-
-          <View> 
-            {requiredField ? 
-
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.required}>*</Text>
-                  <Text style={styles.text}>Phone</Text>
-                </View>
-                : <>
-                  <Text style={styles.text}>Phone :</Text>
-                </>
-            }   
-              <TextInput
-                style={styles.textInput}
-                onChangeText={(value) => handleUserPhoneNumberChange(value)}
-                keyboardType='number-pad'
-                placeholder="Your phone number here .."
-              />
-          </View> 
-
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
           <View>
-              <Text style={styles.text}>Clinic :</Text>
-              <CustomDropdown
-                // handleAddEvent={handleAddNewVisitPurpose}
-                onChange={(value) => value && handleClinic(value)}
-                // buttonLabel={"Add new visit purpose"}
-                isButton={false}
-                dropdownType={"single"}
-                // autoFocusSearch={true}
-                enableSearch={true}
-                labelField="clinic"
-                valueField="id"
-                // defaultValue={formData && formData.visit_purpose}
-                data={clinicData}
-              />
+            {requiredField ? (
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.required}>*</Text>
+                <Text style={styles.text}>Phone</Text>
+              </View>
+            ) : (
+              <>
+                <Text style={styles.text}>Phone :</Text>
+              </>
+            )}
+            <TextInput
+              style={styles.textInput}
+              onChangeText={(value) => handleUserPhoneNumberChange(value)}
+              keyboardType='number-pad'
+              placeholder='Your phone number here ..'
+            />
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
+
+          <View>
+            <Text style={styles.text}>Clinic :</Text>
+            <CustomDropdown
+              // handleAddEvent={handleAddNewVisitPurpose}
+              onChange={(value) => value && handleClinic(value)}
+              // buttonLabel={"Add new visit purpose"}
+              isButton={false}
+              dropdownType={'single'}
+              // autoFocusSearch={true}
+              enableSearch={true}
+              labelField='clinic'
+              valueField='id'
+              // defaultValue={formData && formData.visit_purpose}
+              data={clinicData}
+            />
+          </View>
+
+          <Divider style={styles.divider} />
 
           <View>
             <Text style={styles.text}>Branches :</Text>
             <CheckBox
-              title="Check all"
+              title='Check all'
               checked={checked}
-              checkedColor="#006766"
+              checkedColor='#006766'
               onPress={() => {
-                setChecked(!checked),
-                  setAddress(!checked),
-                  setAddress1(!checked)
-                  // setAddress2(!checked);
+                setChecked(!checked), setAddress(!checked), setAddress1(!checked);
+                // setAddress2(!checked);
               }}
             />
             <CheckBox
-              title="Test"
+              title='Test'
               checked={address}
-              checkedColor="#006766"
+              checkedColor='#006766'
               onPress={() => {
                 setAddress(!address);
               }}
             />
             <CheckBox
-              title="Chennai"
+              title='Chennai'
               checked={address1}
-              checkedColor="#006766"
+              checkedColor='#006766'
               onPress={() => {
                 setAddress1(!address1);
               }}
             />
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
           <View>
-            {requiredField ? 
-
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.required}>*</Text>
-                  <Text style={styles.text}>Branch</Text>
-                </View>
-                : <>
-                  <Text style={styles.text}>Branch :</Text>
-                </>
-            }
-              <CustomDropdown
-                // handleAddEvent={handleAddNewVisitPurpose}
-                onChange={(value) => value && handleBranch(value)}
-                // buttonLabel={"Add new visit purpose"}
-                isButton={false}
-                dropdownType={"single"}
-                // autoFocusSearch={true}
-                enableSearch={true}
-                labelField="branch"
-                valueField="id"
-                defaultValue={userData.branch.id}
-                data={branchData}
-              />
+            {requiredField ? (
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={styles.required}>*</Text>
+                <Text style={styles.text}>Branch</Text>
+              </View>
+            ) : (
+              <>
+                <Text style={styles.text}>Branch :</Text>
+              </>
+            )}
+            <CustomDropdown
+              // handleAddEvent={handleAddNewVisitPurpose}
+              onChange={(value) => value && handleBranch(value)}
+              // buttonLabel={"Add new visit purpose"}
+              isButton={false}
+              dropdownType={'single'}
+              // autoFocusSearch={true}
+              enableSearch={true}
+              labelField='branch'
+              valueField='id'
+              defaultValue={userData.branch.id}
+              data={branchData}
+            />
           </View>
 
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
 
           <View style={styles.element}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-              <Text style={{
-                fontWeight: 'bold', 
-                color: '#006766', 
-                fontSize: 15
-                }}>Access to Billing & Subscription :</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: '#006766',
+                  fontSize: 15,
+                }}
+              >
+                Access to Billing & Subscription :
+              </Text>
               <Switch
-                trackColor={{ false: "#BFD9D9", true: "#006766" }}
-                thumbColor={isBillingSwitchOn ? "#0E9C9B" : "#0E9C9B"}
+                trackColor={{ false: '#BFD9D9', true: '#006766' }}
+                thumbColor={isBillingSwitchOn ? '#0E9C9B' : '#0E9C9B'}
                 onValueChange={onToggleBillingSwitch}
                 value={isBillingSwitchOn}
                 // defaultValue={formData && formData.status}
@@ -717,24 +709,23 @@ const AddUser = ({route, navigation}) => {
             </View>
           </View>
 
-          <Divider style={styles.divider}/>
-          
-          <View style={styles.element}>
-            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-              
-              {requiredField ? 
+          <Divider style={styles.divider} />
 
-                  <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.required}>*</Text>
-                    <Text style={{fontWeight: "bold", color: '#006766'}}>Active</Text>
-                  </View>
-                  : <>
-                      <Text style={{fontWeight: "bold", color: '#006766'}}>* Active</Text>
-                    </>
-              }
+          <View style={styles.element}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              {requiredField ? (
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.required}>*</Text>
+                  <Text style={{ fontWeight: 'bold', color: '#006766' }}>Active</Text>
+                </View>
+              ) : (
+                <>
+                  <Text style={{ fontWeight: 'bold', color: '#006766' }}>* Active</Text>
+                </>
+              )}
               <Switch
-                trackColor={{ false: "#BFD9D9", true: "#006766" }}
-                thumbColor={isSwitchOn ? "#0E9C9B" : "#0E9C9B"}
+                trackColor={{ false: '#BFD9D9', true: '#006766' }}
+                thumbColor={isSwitchOn ? '#0E9C9B' : '#0E9C9B'}
                 onValueChange={onToggleSwitch}
                 value={isSwitchOn}
                 defaultValue={!isSwitchOn}
@@ -744,41 +735,40 @@ const AddUser = ({route, navigation}) => {
 
           <View>
             <>
-            {successMsg ?
+              {successMsg ? (
                 <Portal>
                   <Dialog visible={successMsg} onDismiss={handlegoback}>
-                      <Dialog.Title style={{ color: '#00A300' }}>Success</Dialog.Title>
-                      <Dialog.Content>
-                          <Paragraph>User Registered Successfully</Paragraph>
-                      </Dialog.Content>
-                      <Dialog.Actions>
-                          <Button onPress={handlegoback} title="Done" />
-                      </Dialog.Actions>
+                    <Dialog.Title style={{ color: '#00A300' }}>Success</Dialog.Title>
+                    <Dialog.Content>
+                      <Paragraph>User Registered Successfully</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                      <Button onPress={handlegoback} title='Done' />
+                    </Dialog.Actions>
                   </Dialog>
                 </Portal>
-                : <></>
-              }
-              {errorMsg ?
+              ) : (
+                <></>
+              )}
+              {errorMsg ? (
                 <Portal>
                   <Dialog visible={errorMsg} onDismiss={handleCancel}>
-                      <Dialog.Title style={{ color: 'red' }}>Oops!</Dialog.Title>
-                      <Dialog.Content>
-                          <Paragraph>Error while registering new User</Paragraph>
-                      </Dialog.Content>
-                      <Dialog.Actions>
-                          <Button onPress={handleCancel} title="Done"/>
-                      </Dialog.Actions>
+                    <Dialog.Title style={{ color: 'red' }}>Oops!</Dialog.Title>
+                    <Dialog.Content>
+                      <Paragraph>Error while registering new User</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                      <Button onPress={handleCancel} title='Done' />
+                    </Dialog.Actions>
                   </Dialog>
                 </Portal>
-                : <></>
-              }
+              ) : (
+                <></>
+              )}
             </>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={onSubmit}
-          style={{ backgroundColor: '#006766', padding: 20, marginTop: 20 }}
-        >
+        <TouchableOpacity onPress={onSubmit} style={{ backgroundColor: '#006766', padding: 20, marginTop: 20 }}>
           <Text style={{ color: '#fff', textAlign: 'center', fontSize: 16, fontWeight: 'bold' }}>Submit</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -789,15 +779,15 @@ const AddUser = ({route, navigation}) => {
 const styles = StyleSheet.create({
   row: {
     // marginVertical: 7,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 20
+    paddingVertical: 20,
   },
   text: {
     marginBottom: 10,
-    fontWeight: "bold",
-    color: '#006766'
+    fontWeight: 'bold',
+    color: '#006766',
   },
   textInput: {
     backgroundColor: '#BFD9D950',
@@ -807,7 +797,7 @@ const styles = StyleSheet.create({
     // elevation: 2,
     borderRadius: 20,
     borderWidth: 0.7,
-    borderColor: '#bebebe70'
+    borderColor: '#bebebe70',
   },
   textInputComp: {
     backgroundColor: '#BFD9D950',
@@ -833,33 +823,33 @@ const styles = StyleSheet.create({
     width: 150,
     height: 35,
     padding: 10,
-    backgroundColor: "#BFD9D9",
+    backgroundColor: '#BFD9D9',
   },
   dropdown1: {
     marginHorizontal: 8,
     height: 60,
-    backgroundColor: "#BFD9D9",
+    backgroundColor: '#BFD9D9',
     borderRadius: 5,
     elevation: 2,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
   },
   dob: {
     width: 115,
     height: 35,
     padding: 10,
     borderWidth: 1,
-    borderColor: "#006766",
+    borderColor: '#006766',
   },
   placement: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   switch: {
     marginVertical: 5,
   },
   datePicker: {
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
   },
   element: {
     backgroundColor: '#BFD9D950',
@@ -872,17 +862,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 50,
     // elevation: 2,
-    marginBottom: 20
+    marginBottom: 20,
   },
   required: {
     color: 'red',
     marginRight: 10,
     fontWeight: 'bold',
-    fontSize: 14
+    fontSize: 14,
   },
   datePicker: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   divider: {
     marginVertical: 10,

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Text, TouchableOpacity, View, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { Header } from 'react-native-elements';

@@ -28,7 +28,7 @@ const AddColor = ({ navigation }) => {
       .then((res) => {
         console.log('gfty', res.data);
         if (res.status == '200') {
-          // navigation.navigate('petSubmitPage')
+          // navigation.navigate('PetSubmitPage')
           console.log('Color Registered Successfully');
           setSuccessMsg(true);
         } else if (res.status == '210') {

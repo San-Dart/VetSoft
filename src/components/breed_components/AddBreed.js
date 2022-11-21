@@ -72,7 +72,7 @@ const AddBreed = ({ route, navigation }) => {
       .post('/breed', formData)
       .then((res) => {
         if (res.status == '200') {
-          // navigation.navigate('petSubmitPage')
+          // navigation.navigate('PetSubmitPage')
           console.log('Breed Registered Successfully');
           setSuccessMsg(true);
         } else if (res.status == '210') {

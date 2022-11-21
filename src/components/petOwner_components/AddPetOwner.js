@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 
 import { Dropdown } from 'react-native-element-dropdown';
 // import { Button } from "react-native-elements";
 import axios from 'react-native-axios';
-import { Country, State, City } from 'country-state-city';
 import { Dialog, Portal, Paragraph, Button } from 'react-native-paper';
 import CustomDropdown from '../CustomDropdown/CustomDropdown';
 import PhoneInput from 'react-native-phone-number-input';
@@ -47,64 +46,64 @@ const AddPetOwner = ({ route, navigation }) => {
   useEffect(() => {
     getBranchData();
     getClinicData();
-    getCountry();
-    getSate();
-    getCity();
+    // getCountry();
+    // getSate();
+    // getCity();
   }, []);
 
-  const getCountry = () => {
-    // console.log('Country', State.getAllCountries());
-    // let countryData = require('../../country.json');
-    let countryData = Country.getAllCountries();
-    let country = country;
-    country = [];
-    countryData.map((elements, index) => {
-      country.push({
-        // id: index,
-        isoCode: elements.isoCode,
-        phonecode: elements.phonecode,
-        name: elements.name,
-        flag: elements.flag,
-        label: elements.name + '' + elements.flag,
-      });
-      // console.log('test_country', country);
-      set_country_data(country);
-    });
-  };
+  // const getCountry = () => {
+  //   // console.log('Country', State.getAllCountries());
+  //   // let countryData = require('../../country.json');
+  //   let countryData = Country.getAllCountries();
+  //   let country = country;
+  //   country = [];
+  //   countryData.map((elements, index) => {
+  //     country.push({
+  //       // id: index,
+  //       isoCode: elements.isoCode,
+  //       phonecode: elements.phonecode,
+  //       name: elements.name,
+  //       flag: elements.flag,
+  //       label: elements.name + '' + elements.flag,
+  //     });
+  //     // console.log('test_country', country);
+  //     set_country_data(country);
+  //   });
+  // };
 
-  const getSate = (state_name) => {
-    // let stateData = require('../../state.json');
-    let stateData = State.getStatesOfCountry('IN');
-    let state = state;
-    state = [];
-    stateData.map((element, index) => {
-      state.push({
-        isoCode: element.isoCode,
-        countryCode: element.countryCode,
-        name: element.name,
-        label: element.name,
-      });
-      set_state_data(state);
-      // const state_name = state.name;
-    });
-  };
+  // const getSate = (state_name) => {
+  //   // let stateData = require('../../state.json');
+  //   let stateData = State.getStatesOfCountry('IN');
+  //   let state = state;
+  //   state = [];
+  //   stateData.map((element, index) => {
+  //     state.push({
+  //       isoCode: element.isoCode,
+  //       countryCode: element.countryCode,
+  //       name: element.name,
+  //       label: element.name,
+  //     });
+  //     set_state_data(state);
+  //     // const state_name = state.name;
+  //   });
+  // };
 
-  const getCity = (state_name) => {
-    // console.log('Citiessss', state_name);
-    let cityData = City.getCitiesOfState('IN', state_name);
-    let city = city;
-    city = [];
-    cityData.map((element, index) => {
-      city.push({
-        isoCode: element.isoCode,
-        countryCode: element.countryCode,
-        name: element.name,
-        label: element.name,
-      });
-      // let filteredState = state.filter((elements) => elements.countryCode !== 'IN');
-      set_city_data(city);
-    });
-  };
+  // const getCity = (state_name) => {
+  //   // console.log('Citiessss', state_name);
+  //   let cityData = City.getCitiesOfState('IN', state_name);
+  //   let city = city;
+  //   city = [];
+  //   cityData.map((element, index) => {
+  //     city.push({
+  //       isoCode: element.isoCode,
+  //       countryCode: element.countryCode,
+  //       name: element.name,
+  //       label: element.name,
+  //     });
+  //     // let filteredState = state.filter((elements) => elements.countryCode !== 'IN');
+  //     set_city_data(city);
+  //   });
+  // };
 
   const getClinicData = () => {
     let clinicData = clinicData;
@@ -230,7 +229,7 @@ const AddPetOwner = ({ route, navigation }) => {
   //     if (route.params.fromVisits) {
   //       navigation.goBack();
   //     } else {
-  //       navigation.navigate('petSubmitPage', { registeredPetData: res.data.registeredPetData });
+  //       navigation.navigate('PetSubmitPage', { registeredPetData: res.data.registeredPetData });
   //     }
   //   }
   // })
@@ -248,7 +247,7 @@ const AddPetOwner = ({ route, navigation }) => {
         console.log('Response2', res.data);
 
         if (res.status == '200') {
-          // navigation.navigate('petSubmitPage')
+          // navigation.navigate('PetSubmitPage')
           console.log('Pet Owner Registered Successfully');
           setSuccessMsg(true);
         } else {

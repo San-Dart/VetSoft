@@ -404,7 +404,7 @@ const EditPet = ({ route, navigation }) => {
         .then((res) => {
           // console.log("Registered Data", res.data);
           if (res.status == '200') {
-            //   navigation.navigate("petSubmitPage", {registeredPetData: res.data});
+            //   navigation.navigate("PetSubmitPage", {registeredPetData: res.data});
             console.log('Successfully Updated Data', res.data);
             setSuccessMsg(true);
           }
