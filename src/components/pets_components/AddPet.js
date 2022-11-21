@@ -439,7 +439,7 @@ const AddPet = memo(({ route, navigation }) => {
             if (route.params.fromVisits) {
               navigation.goBack();
             } else {
-              navigation.navigate('petSubmitPage', { registeredPetData: res.data.registeredPetData });
+              navigation.navigate('PetSubmitPage', { registeredPetData: res.data.registeredPetData });
             }
           }
         })

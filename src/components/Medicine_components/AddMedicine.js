@@ -1,21 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  ViewBase,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import { Divider, Dialog, Portal, Paragraph, Button } from "react-native-paper";
-import axios from "react-native-axios";
-import CustomDropdown from "../CustomDropdown/CustomDropdown";
+import React, { useState, useEffect } from 'react';
+import { Text, View, ViewBase, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { Divider, Dialog, Portal, Paragraph, Button } from 'react-native-paper';
+import axios from 'react-native-axios';
+import CustomDropdown from '../CustomDropdown/CustomDropdown';
 
 const AddMedicine = ({ route, navigation }) => {
   const [formData, setFormData] = useState({
-    medicine_name: "",
-    medicine_categories: "",
-    size: "",
+    medicine_name: '',
+    medicine_categories: '',
+    size: '',
     clinic_id: route.params.userDetails.clinic.id,
   });
 
@@ -29,7 +22,7 @@ const AddMedicine = ({ route, navigation }) => {
   const [ml, setMl] = useState(false);
   const [capsuleMl, setCapsuleMl] = useState(false);
 
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState('');
 
   useEffect(() => {
     getMedicineCategoriesDataType();
@@ -81,7 +74,7 @@ const AddMedicine = ({ route, navigation }) => {
   };
 
   const handleMedicineNameDataChange = (value) => {
-    console.log("test");
+    console.log('test');
     setFormData({
       ...formData,
       medicine_name: value,
@@ -90,19 +83,19 @@ const AddMedicine = ({ route, navigation }) => {
 
   const handleMedicineCategoriesDataChange = (value) => {
     // console.log("On Change",value.id);
-    if (value.medicine_type == "tablet") {
+    if (value.medicine_type == 'tablet') {
       setMg(true);
     } else {
       setMg(false);
     }
 
-    if (value.medicine_type == "injection") {
+    if (value.medicine_type == 'injection') {
       setMl(true);
     } else {
       setMl(false);
     }
 
-    if (value.medicine_type == "capsule") {
+    if (value.medicine_type == 'capsule') {
       setCapsuleMl(true);
     } else {
       setCapsuleMl(false);
@@ -123,43 +116,43 @@ const AddMedicine = ({ route, navigation }) => {
   };
 
   const handleMedicineSizeDataChangeMg = (value) => {
-    if (value == "") {
+    if (value == '') {
       setFormData({
         ...formData,
-        size: "",
+        size: '',
       });
-    } else if (value !== "") {
+    } else if (value !== '') {
       setFormData({
         ...formData,
-        size: value + " mg",
+        size: value + ' mg',
       });
     }
   };
 
   const handleMedicineSizeDataChangeMl = (value) => {
-    if (value == "") {
+    if (value == '') {
       setFormData({
         ...formData,
-        size: "",
+        size: '',
       });
-    } else if (value !== "") {
+    } else if (value !== '') {
       setFormData({
         ...formData,
-        size: value + " ml",
+        size: value + ' ml',
       });
     }
   };
 
   const handleMedicineSizeDataChangeCapsuleMl = (value) => {
-    if (value === "") {
+    if (value === '') {
       setFormData({
         ...formData,
-        size: "",
+        size: '',
       });
-    } else if (value !== "") {
+    } else if (value !== '') {
       setFormData({
         ...formData,
-        size: value + " ml",
+        size: value + ' ml',
       });
     }
   };
@@ -169,9 +162,9 @@ const AddMedicine = ({ route, navigation }) => {
     await axios
       .post(`medicine`, formData)
       .then((res) => {
-        if (res.status == "200") {
-          // navigation.navigate('petSubmitPage')
-          console.log("Medicine Registered Successfully");
+        if (res.status == '200') {
+          // navigation.navigate('PetSubmitPage')
+          console.log('Medicine Registered Successfully');
           setSuccessMsg(true);
         }
       })
@@ -199,11 +192,11 @@ const AddMedicine = ({ route, navigation }) => {
       <View>
         <View>
           <View style={styles.formItem}>
-            <Text style={{ fontWeight: "bold", fontSize: 16 }}>Medicine :</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Medicine :</Text>
             <TextInput
-              placeholder="e.g. paracetamol"
+              placeholder='e.g. paracetamol'
               style={{
-                backgroundColor: "#fff",
+                backgroundColor: '#fff',
                 marginVertical: 20,
                 padding: 10,
                 height: 50,
@@ -216,19 +209,15 @@ const AddMedicine = ({ route, navigation }) => {
           </View>
 
           <View style={styles.formItem}>
-            <Text
-              style={{ fontWeight: "bold", marginBottom: 20, fontSize: 16 }}
-            >
-              Type :
-            </Text>
+            <Text style={{ fontWeight: 'bold', marginBottom: 20, fontSize: 16 }}>Type :</Text>
             <CustomDropdown
               // handleAddEvent={handleAddNewMedicine}
               isButton={false}
               autoFocusSearch={false}
               onChange={(value) => handleMedicineCategoriesDataChange(value)}
-              buttonLabel={"Add new medicine"}
-              labelField="medicine_type"
-              valueField="id"
+              buttonLabel={'Add new medicine'}
+              labelField='medicine_type'
+              valueField='id'
               // defaultValue={5}
               data={medicineCategoriesData}
             />
@@ -237,11 +226,11 @@ const AddMedicine = ({ route, navigation }) => {
           <View style={styles.formItem}>
             <>
               {mg ? (
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={{ fontWeight: "bold" }}>Size :</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontWeight: 'bold' }}>Size :</Text>
                   <TextInput
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: '#fff',
                       marginVertical: 20,
                       padding: 10,
                       height: 50,
@@ -249,7 +238,7 @@ const AddMedicine = ({ route, navigation }) => {
                       width: 150,
                       marginLeft: 10,
                     }}
-                    keyboardType="number-pad"
+                    keyboardType='number-pad'
                     //onSelectItem={(value) =>{ value && handleMedicineSizeDataChange(value)}}
                     onChangeText={(value) => {
                       handleMedicineSizeDataChangeMg(value);
@@ -262,11 +251,11 @@ const AddMedicine = ({ route, navigation }) => {
               )}
 
               {ml ? (
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={{ fontWeight: "bold" }}>Size :</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontWeight: 'bold' }}>Size :</Text>
                   <TextInput
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: '#fff',
                       marginVertical: 20,
                       padding: 10,
                       height: 50,
@@ -274,7 +263,7 @@ const AddMedicine = ({ route, navigation }) => {
                       width: 150,
                       marginLeft: 10,
                     }}
-                    keyboardType="number-pad"
+                    keyboardType='number-pad'
                     // onSelectItem={(value) =>{ value && handleMedicineSizeDataChange(value)}}
                     onChangeText={(value) => {
                       handleMedicineSizeDataChangeMl(value);
@@ -287,11 +276,11 @@ const AddMedicine = ({ route, navigation }) => {
               )}
 
               {capsuleMl ? (
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text style={{ fontWeight: "bold" }}>Size :</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={{ fontWeight: 'bold' }}>Size :</Text>
                   <TextInput
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: '#fff',
                       marginVertical: 20,
                       padding: 10,
                       height: 50,
@@ -299,7 +288,7 @@ const AddMedicine = ({ route, navigation }) => {
                       width: 150,
                       marginLeft: 10,
                     }}
-                    keyboardType="number-pad"
+                    keyboardType='number-pad'
                     //onSelectItem={(value) =>{ value && handleMedicineSizeDataChange(value)}}
                     onChangeText={(value) => {
                       handleMedicineSizeDataChangeCapsuleMl(value);
@@ -319,9 +308,7 @@ const AddMedicine = ({ route, navigation }) => {
           {successMsg ? (
             <Portal>
               <Dialog visible={successMsg} onDismiss={handlegoback}>
-                <Dialog.Title style={{ color: "#00A300" }}>
-                  Success
-                </Dialog.Title>
+                <Dialog.Title style={{ color: '#00A300' }}>Success</Dialog.Title>
                 <Dialog.Content>
                   <Paragraph>New Medicine has been Succesfully added</Paragraph>
                 </Dialog.Content>
@@ -336,7 +323,7 @@ const AddMedicine = ({ route, navigation }) => {
           {errorMsg ? (
             <Portal>
               <Dialog visible={errorMsg} onDismiss={handleCancel}>
-                <Dialog.Title style={{ color: "red" }}>Oops!</Dialog.Title>
+                <Dialog.Title style={{ color: 'red' }}>Oops!</Dialog.Title>
                 <Dialog.Content>
                   <Paragraph>Error while adding a new Medicine</Paragraph>
                 </Dialog.Content>
@@ -350,12 +337,9 @@ const AddMedicine = ({ route, navigation }) => {
           )}
         </>
       </View>
-      <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
-        <TouchableOpacity
-          style={{ backgroundColor: "#006766", padding: 20 }}
-          onPress={handleSubmit}
-        >
-          <Text style={{ color: "#fff", textAlign: "center" }}>Done</Text>
+      <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+        <TouchableOpacity style={{ backgroundColor: '#006766', padding: 20 }} onPress={handleSubmit}>
+          <Text style={{ color: '#fff', textAlign: 'center' }}>Done</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -371,7 +355,7 @@ const styles = StyleSheet.create({
   },
 
   dropdown: {
-    backgroundColor: "#BFD9D9",
+    backgroundColor: '#BFD9D9',
     padding: 10,
   },
 });

@@ -123,7 +123,7 @@ const AddAnimal = ({ route, navigation }) => {
       .post(`/animal`, formData)
       .then((res) => {
         if (res.status == '200') {
-          // navigation.navigate('petSubmitPage')
+          // navigation.navigate('PetSubmitPage')
           console.log('Animal Registered Successfully');
           setSuccessMsg(true);
         } else if (res.status == '210') {

@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useReducer, useState } from 'react';
+import { ActivityIndicator, View, Text } from 'react-native';
 import axios from 'react-native-axios';
-import { TouchableOpacity, Text, LogBox, Button, Image } from 'react-native';
 import { FAB, Provider as PaperProvider, Searchbar } from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Navigator
 import { NavigationContainer, useRoute } from '@react-navigation/native';
@@ -41,10 +40,10 @@ import AddDisease from './src/components/disease_components/AddDisease';
 import AddSymptom from './src/components/symptoms_components/AddSymptom';
 import AddVaccine from './src/components/vaccine_components/AddVaccine';
 import AddAnimal from './src/components/animal_components/AddAnimal';
-import AddUser from './src/components/user_components/AddUser';
-import AddPetOwner from './src/components/petOwner_components/AddPetOwner';
 import AddVisitType from './src/components/visitType_components/AddVisitType';
 import AddVisitPurpose from './src/components/visitPurpose_components/AddVisitPurpose';
+import AddUser from './src/components/user_components/AddUser';
+import AddPetOwner from './src/components/petOwner_components/AddPetOwner';
 import NewVisit from './src/components/visits_components/NewVisit';
 import AddNewVisitDetails from './src/components/visits_components/AddNewVisitDetails';
 import AddPet from './src/components/pets_components/AddPet';
@@ -69,7 +68,7 @@ import PetDetails from './src/components/pets_components/PetDetails';
 import VisitHistory from './src/components/visitHistory_components/VisitHistory';
 import DocumentUpload from './src/components/DocumentUpload';
 import SubmitNewVisitForm from './src/components/visits_components/SubmitNewVisitForm';
-import petSubmitPage from './src/components/pets_components/petSubmitPage';
+import PetSubmitPage from './src/components/pets_components/PetSubmitPage';
 import VisitHistoryDetails from './src/components/visitHistory_components/VisitHistoryDetails';
 import PetOwnerDetail from './src/components/petOwner_components/PetOwnerDetail';
 
@@ -79,12 +78,7 @@ import AddMedicineToPrescription from './src/components/prescription_components/
 
 // Auth
 import { AuthContext } from './src/components/Context';
-import { ActivityIndicator, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SearchBar } from 'react-native-screens';
-import BranchFilter from './src/components/BranchFilter';
-import { clickProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
-import PageHeader from './src/Header_Component/PageHeader';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,12 +87,6 @@ axios.defaults.baseURL = 'https://vetsoftws.demodooms.com/api';
 
 let USERDETAILS = {};
 
-LogBox.ignoreAllLogs(true);
-// Ignore log notification by message:
-LogBox.ignoreLogs(['Warning: ...']);
-// Ignore all log notifications:
-LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 export default function App() {
   const initLoginState = {
@@ -199,6 +187,26 @@ export default function App() {
     []
   );
 
+  const getToken = async () => {
+    let token = null;
+    let userId = '';
+    let userDetails = {};
+    // token = null;
+    try {
+      token = await AsyncStorage.getItem('userToken');
+      userId = await AsyncStorage.getItem('userId');
+      await getUserDetails(userId, token);
+      userDetails = USERDETAILS;
+    } catch (e) {
+      console.log(e);
+    }
+    dispatch({
+      type: 'RETRIEVE_TOKEN',
+      userToken: token,
+      userDetails: userDetails,
+    });
+  };
+
   useEffect(() => {
     getToken();
   }, []);
@@ -226,25 +234,7 @@ export default function App() {
       });
   };
 
-  const getToken = async () => {
-    let token = null;
-    let userId = '';
-    let userDetails = {};
-    // token = null;
-    try {
-      token = await AsyncStorage.getItem('userToken');
-      userId = await AsyncStorage.getItem('userId');
-      await getUserDetails(userId, token);
-      userDetails = USERDETAILS;
-    } catch (e) {
-      console.log(e);
-    }
-    dispatch({
-      type: 'RETRIEVE_TOKEN',
-      userToken: token,
-      userDetails: userDetails,
-    });
-  };
+
 
   const getUserDetails = async (userId, token) => {
     await axios
@@ -305,12 +295,6 @@ export default function App() {
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
-                name='PageHeader'
-                component={PageHeader}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
                 name='Owners'
                 component={Owners}
                 options={{ title: 'Pet Owners', headerShown: false }}
@@ -326,7 +310,6 @@ export default function App() {
                 name='Masters'
                 component={Masters}
               />
-              {/* Masters */}
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='Animal'
@@ -371,17 +354,16 @@ export default function App() {
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
-                name='VisitType'
-                component={VisitType}
-                options={{ title: 'Masters/Visit Type' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
                 name='VisitPurpose'
                 component={VisitPurpose}
                 options={{ title: 'Masters/Visit Purpose' }}
               />
-              {/* Masters Components*/}
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='VisitType'
+                component={VisitType}
+                options={{ title: 'Masters/Visit Type' }}
+              />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='AddMedicine'
@@ -436,8 +418,6 @@ export default function App() {
                 component={AddVisitPurpose}
                 options={{ title: 'Add Visit Purpose' }}
               />
-              {/* <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="AddTemplate" component={AddTemplate} options={{ title: 'Add Prescription' }} /> */}
-              {/* <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="AddPrescription" component={AddPrescription} options={{ title: 'Add Prescription Template' }} /> */}
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='AddUser'
@@ -456,48 +436,7 @@ export default function App() {
                 component={AddPetOwner}
                 options={{ title: 'Create Pet Owner', headerShown: false }}
               />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditAnimal'
-                component={EditAnimal}
-                options={{ title: 'Update Animal' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditBreed'
-                component={EditBreed}
-                options={{ title: 'Update Breed' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditColor'
-                component={EditColor}
-                options={{ title: 'Update Colors' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditDisease'
-                component={EditDisease}
-                options={{ title: 'Update Disease' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditSymptom'
-                component={EditSymptom}
-                options={{ title: 'Update Symptoms' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditVisitType'
-                component={EditVisitType}
-                options={{ title: 'Update Type of Visit' }}
-              />
-              <Stack.Screen
-                initialParams={{ userDetails: loginState.userDetails }}
-                name='EditVisitPurpose'
-                component={EditVisitPurpose}
-                options={{ title: 'Update Purpose of Visit' }}
-              />
+
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='EditVisit'
@@ -522,7 +461,6 @@ export default function App() {
                 component={EditMedicine}
                 options={{ title: 'Update Medicine' }}
               />
-              {/* Components */}
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='Templates'
@@ -580,7 +518,6 @@ export default function App() {
                   statusBarColor: '#00000099',
                 }}
               />
-              {/* <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="AfterSubmit" component={AfterSubmit} options={{ title: 'After Submit' }}/> */}
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
                 name='DocumentUpload'
@@ -599,8 +536,8 @@ export default function App() {
               />
               <Stack.Screen
                 initialParams={{ userDetails: loginState.userDetails }}
-                name='petSubmitPage'
-                component={petSubmitPage}
+                name='PetSubmitPage'
+                component={PetSubmitPage}
                 options={{ title: 'Registration Completed', headerShown: false }}
               />
               <Stack.Screen
@@ -633,9 +570,48 @@ export default function App() {
                 component={AddMedicineToPrescription}
                 options={{ title: 'Insert Medicine' }}
               />
-              {/* <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="EditPrescriptionTemplate" component={EditPrescriptionTemplate} options={{ title: 'Edit Template' }} />
-              <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="AddMedicineToPrescription" component={AddMedicineToPrescription} options={{ title: 'Insert Medicine' }} />
-              <Stack.Screen initialParams={{ userDetails: loginState.userDetails }} name="EditMedicineToPrescription" component={EditMedicineToPrescription} options={{ title: 'Update Medicine' }} />               */}
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditAnimal'
+                component={EditAnimal}
+                options={{ title: 'Update Animal' }}
+              />
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditBreed'
+                component={EditBreed}
+                options={{ title: 'Update Breed' }}
+              />
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditColor'
+                component={EditColor}
+                options={{ title: 'Update Colors' }}
+              />
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditDisease'
+                component={EditDisease}
+                options={{ title: 'Update Disease' }}
+              />
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditSymptom'
+                component={EditSymptom}
+                options={{ title: 'Update Symptoms' }}
+              />
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditVisitType'
+                component={EditVisitType}
+                options={{ title: 'Update Type of Visit' }}
+              />
+              <Stack.Screen
+                initialParams={{ userDetails: loginState.userDetails }}
+                name='EditVisitPurpose'
+                component={EditVisitPurpose}
+                options={{ title: 'Update Purpose of Visit' }}
+              />
             </Stack.Navigator>
           ) : (
             <Stack.Navigator>
