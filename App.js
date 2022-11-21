@@ -247,7 +247,9 @@ export default function App() {
           USERDETAILS = res.data;
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        // console.log(err);
+      });
   };
 
   if (loginState.isLoading) {
