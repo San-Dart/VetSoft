@@ -87,7 +87,6 @@ axios.defaults.baseURL = 'https://vetsoftws.demodooms.com/api';
 
 let USERDETAILS = {};
 
-
 export default function App() {
   const initLoginState = {
     userToken: null,
@@ -234,8 +233,6 @@ export default function App() {
       });
   };
 
-
-
   const getUserDetails = async (userId, token) => {
     await axios
       .get(`/user/${userId}`, {
@@ -250,9 +247,7 @@ export default function App() {
           USERDETAILS = res.data;
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   if (loginState.isLoading) {
