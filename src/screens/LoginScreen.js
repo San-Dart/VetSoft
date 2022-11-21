@@ -40,7 +40,6 @@ export default function LoginScreen() {
   const handleInputChange = (value) => {
     if (value.length !== 0) {
       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-      // console.log(reg.test());
       if (reg.test(value)) {
         setLoginData({
           ...loginData,
